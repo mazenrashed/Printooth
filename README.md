@@ -1,4 +1,5 @@
 # Universal Bluetooth Printer
+[![](https://jitpack.io/v/mazenrashed/Universal-Bluetooth-Printer.svg)](https://jitpack.io/#mazenrashed/Universal-Bluetooth-Printer)
 UBP aim is to provide a simple abstraction for use the bluetooth printers regardless of its brand.
 
 ###  Add the JitPack repository to your build file
