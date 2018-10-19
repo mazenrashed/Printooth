@@ -35,7 +35,7 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
         //Printer is ready now 
 }
 ```
-If you want to make your own scanning and pairing user interface, you can pass your paired printer to UBP like this:
+If you want to make your own user interface, you can pass your paired printer to UBP like this:
 ```kotlin
 UBP.setPrinter(printerName, printerAddress)
 ```
