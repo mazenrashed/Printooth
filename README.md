@@ -23,7 +23,7 @@ UBP.init(context);
 ```
 ### Scan and pair printer
 UBP is providing a scanning activity to make pairing process easy.
-Just start `ScanningActivity` and it will skip the process of pairing and saving printer.
+Just start `ScanningActivity` and you will skip the process of pairing and saving printer.
 ```kotlin
 startActivityForResult(Intent(this, ScanningActivity::class.java), ScanningActivity.SCANNING_FOR_PRINTER)
 ```
