@@ -8,6 +8,7 @@ abstract class Printer {
     var underlineModeCommand = initUnderlineModeCommand()
     var characterCodeCommand = initCharacterCodeCommand()
     var feedLineCommand = initFeedLineCommand()
+    var lineSpacingCommand = initLineSpacingCommand()
 
     abstract fun initInitPrinterCommand(): ByteArray
     abstract fun initJustificationCommand(): ByteArray
@@ -16,5 +17,6 @@ abstract class Printer {
     abstract fun initUnderlineModeCommand(): ByteArray
     abstract fun initCharacterCodeCommand(): ByteArray
     abstract fun initFeedLineCommand(): ByteArray
+    abstract fun initLineSpacingCommand(): ByteArray
 
 }

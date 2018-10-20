@@ -2,6 +2,8 @@ package com.mazenrashed.universalbluethootprinter.data
 
 open class DefaultPrinter : Printer() {
 
+    override fun initLineSpacingCommand(): ByteArray = byteArrayOf(0x1B, 0x33)
+
     override fun initInitPrinterCommand(): ByteArray = byteArrayOf(0x1b, 0x40)
 
     override fun initJustificationCommand(): ByteArray = byteArrayOf(27, 97)
@@ -28,6 +30,10 @@ open class DefaultPrinter : Printer() {
         val CHARACTER_CODE_ARABIC_CP720: Byte = 40
         val CHARACTER_CODE_ARABIC_WIN_1256: Byte = 41
         val CHARACTER_CODE_ARABIC_FARISI: Byte = 42
-
+        val CHARACTER_CODE_ARABIC_CP864: Byte = 14
+        val LINE_SPACING_60: Byte = 60
+        val LINE_SPACING_30: Byte = 30
+        val FONT_SIZE_NORMAL: Byte = 0x00
+        val FONT_SIZE_LARGE: Byte = 0x10
     }
 }

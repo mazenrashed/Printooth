@@ -90,8 +90,11 @@ class ScanningActivity : AppCompatActivity() {
         refreshLayout.setOnRefreshListener { bluetooth.startScanning() }
         printers.setOnItemClickListener { _, _, i, _ ->
             var device = devices[i]
-            if (device.bondState == BluetoothDevice.BOND_BONDED)
-                bluetooth.unPair(devices[i])
+            if (device.bondState == BluetoothDevice.BOND_BONDED) {
+                BluetoothPrinter.setPrinter(device.name, device.address)
+                setResult(Activity.RESULT_OK)
+                this@ScanningActivity.finish()
+            }
             else if (device.bondState == BluetoothDevice.BOND_NONE)
                 bluetooth.pair(devices[i])
             adapter.notifyDataSetChanged()

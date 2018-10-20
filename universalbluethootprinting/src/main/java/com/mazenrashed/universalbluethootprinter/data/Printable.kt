@@ -1,23 +1,31 @@
 package com.mazenrashed.universalbluethootprinter.data
 
-class Printable private constructor(val text: String, val fontSize: Byte, val alignment: Byte, val newLinesAfter: Int, val bold: Byte, val underlined: Byte, val characterCode: Byte) {
+data class Printable private constructor(val text: String,
+                                         val fontSize: Byte,
+                                         val alignment: Byte,
+                                         val newLinesAfter: Int,
+                                         val bold: Byte,
+                                         val underlined: Byte,
+                                         val characterCode: Byte,
+                                         val lineSpacing: Byte) {
 
     class PrintableBuilder {
         private var text = ""
-        private var fontSize = 0.1.toByte()
+        private var fontSize = DefaultPrinter.FONT_SIZE_NORMAL
         private var alignment: Byte = DefaultPrinter.ALLIGMENT_LEFT
         private var newLinesAfter = 0
         private var bold: Byte = DefaultPrinter.EMPHASISED_MODE_NORMAL
         private var underlined: Byte = DefaultPrinter.UNDELINED_MODE_OFF
         private var characterCode: Byte = DefaultPrinter.CHARACTER_CODE_USA_CP437
+        private var lineSpacing: Byte = DefaultPrinter.LINE_SPACING_30
 
         fun setText(text: String): PrintableBuilder {
             this.text = text
             return this
         }
 
-        fun setFontSize(fontSize: Double): PrintableBuilder {
-            this.fontSize = fontSize.toByte()
+        fun setFontSize(fontSize: Byte): PrintableBuilder {
+            this.fontSize = fontSize
             return this
         }
 
@@ -46,8 +54,13 @@ class Printable private constructor(val text: String, val fontSize: Byte, val al
             return this
         }
 
+        fun setLineSpacing(lineSpacing: Byte): PrintableBuilder {
+            this.lineSpacing = lineSpacing
+            return this
+        }
+
         fun build(): Printable {
-            return Printable(text, fontSize, alignment, newLinesAfter, bold, underlined, characterCode)
+            return Printable(text, fontSize, alignment, newLinesAfter, bold, underlined, characterCode, lineSpacing)
         }
     }
 

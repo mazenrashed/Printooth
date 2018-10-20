@@ -2,15 +2,14 @@ package com.mazenrashed.universalbluethootprinter.utilities
 
 import android.bluetooth.BluetoothDevice
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Handler
 import android.os.Looper
-import com.mazenrashed.universalbluethootprinter.data.DeviceCallback
-import com.mazenrashed.universalbluethootprinter.data.PairedPrinter
-import com.mazenrashed.universalbluethootprinter.data.Printable
-import com.mazenrashed.universalbluethootprinter.data.Printer
+import android.util.Log
+import com.mazenrashed.universalbluethootprinter.data.*
 
 
-class Printing(private var printer: Printer, var pairedPrinter: PairedPrinter, context: Context) {
+class Printing(private var printer: Printer,private var pairedPrinter: PairedPrinter, context: Context) {
     private lateinit var printables: ArrayList<Printable>
     private var bluetooth = Bluetooth(context)
     var printingCallback: PrintingCallback? = null
@@ -53,6 +52,7 @@ class Printing(private var printer: Printer, var pairedPrinter: PairedPrinter, c
             bluetooth.send(printer.emphasizedModeCommand.plus(it.bold))
             bluetooth.send(printer.underlineModeCommand.plus(it.underlined))
             bluetooth.send(printer.characterCodeCommand.plus(it.characterCode))
+            bluetooth.send(printer.lineSpacingCommand.plus(it.lineSpacing))
             bluetooth.send(StringUtils.getStringAsByteArray(it.text))
             if (it.newLinesAfter > 0)
                 bluetooth.send(printer.feedLineCommand.plus(it.newLinesAfter.toByte()))

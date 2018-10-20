@@ -1,8 +1,9 @@
 package com.mazenrashed.universalbluethootprinter.data
 
 import io.paperdb.Paper
+import java.io.Serializable
 
-open class PairedPrinter(name: String?, address: String) {
+open class PairedPrinter(name: String?, address: String) : Serializable {
     var name: String? = name
     var address: String = address
 
