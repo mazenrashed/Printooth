@@ -2,12 +2,14 @@ package com.mazenrashed.universalbluetoothprinter
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import com.mazenrashed.universalbluethootprinter.Printooth
 import com.mazenrashed.universalbluethootprinter.data.DefaultPrinter
 import com.mazenrashed.universalbluethootprinter.data.Printable
 import com.mazenrashed.universalbluethootprinter.ui.ScanningActivity
+import kotlinx.android.synthetic.main.activity_main.piarUnpair
+import kotlinx.android.synthetic.main.activity_main.print
 
 class MainActivity : AppCompatActivity() {
 
