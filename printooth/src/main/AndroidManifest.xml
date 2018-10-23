@@ -1,0 +1,17 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mazenrashed.printooth">
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <application
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.mazenrashed.printooth.ui.ScanningActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="com.mazenrashed.universalbluethootprinter.ui.ScanningActivity.LAUNCH" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
