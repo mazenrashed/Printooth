@@ -17,7 +17,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_scanning.*
 import com.mazenrashed.universalbluethootprinter.data.DiscoveryCallback
 import com.mazenrashed.universalbluethootprinter.utilities.Bluetooth
-import com.mazenrashed.universalbluethootprinter.BluetoothPrinter
+import com.mazenrashed.universalbluethootprinter.Printooth
 import com.mazenrashed.universalbluethootprinter.R
 
 class ScanningActivity : AppCompatActivity() {
@@ -62,7 +62,7 @@ class ScanningActivity : AppCompatActivity() {
             }
 
             override fun onDevicePaired(device: BluetoothDevice) {
-                BluetoothPrinter.setPrinter(device.name, device.address)
+                Printooth.setPrinter(device.name, device.address)
                 Toast.makeText(this@ScanningActivity, "Device Paired", Toast.LENGTH_SHORT).show()
                 adapter.notifyDataSetChanged()
                 setResult(Activity.RESULT_OK)
@@ -71,9 +71,9 @@ class ScanningActivity : AppCompatActivity() {
 
             override fun onDeviceUnpaired(device: BluetoothDevice) {
                 Toast.makeText(this@ScanningActivity, "Device unpaired", Toast.LENGTH_SHORT).show()
-                var pairedPrinter = BluetoothPrinter.getPairedPrinter()
+                var pairedPrinter = Printooth.getPairedPrinter()
                 if (pairedPrinter != null && pairedPrinter.address == device.address)
-                    BluetoothPrinter.removeCurrentPrinter()
+                    Printooth.removeCurrentPrinter()
                 devices.remove(device)
                 adapter.notifyDataSetChanged()
                 bluetooth.startScanning()
@@ -91,7 +91,7 @@ class ScanningActivity : AppCompatActivity() {
         printers.setOnItemClickListener { _, _, i, _ ->
             var device = devices[i]
             if (device.bondState == BluetoothDevice.BOND_BONDED) {
-                BluetoothPrinter.setPrinter(device.name, device.address)
+                Printooth.setPrinter(device.name, device.address)
                 setResult(Activity.RESULT_OK)
                 this@ScanningActivity.finish()
             }
@@ -139,7 +139,7 @@ class ScanningActivity : AppCompatActivity() {
                             BluetoothDevice.BOND_BONDING -> "Pairing.."
                             else -> ""
                         }
-                        findViewById<ImageView>(R.id.pairedPrinter).visibility = if (BluetoothPrinter.getPairedPrinter()?.address == devices[position].address) View.VISIBLE else View.GONE
+                        findViewById<ImageView>(R.id.pairedPrinter).visibility = if (Printooth.getPairedPrinter()?.address == devices[position].address) View.VISIBLE else View.GONE
                     }
         }
     }

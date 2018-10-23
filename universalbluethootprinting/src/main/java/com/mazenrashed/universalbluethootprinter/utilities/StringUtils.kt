@@ -1,3 +1,5 @@
+@file:Suppress("NAME_SHADOWING")
+
 package com.mazenrashed.universalbluethootprinter.utilities
 
 object StringUtils {

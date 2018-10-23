@@ -7,7 +7,7 @@ import com.mazenrashed.universalbluethootprinter.data.Printer
 import com.mazenrashed.universalbluethootprinter.utilities.Printing
 import io.paperdb.Paper
 
-object BluetoothPrinter {
+object Printooth {
 
     fun init(context: Context) = Paper.init(context)
 

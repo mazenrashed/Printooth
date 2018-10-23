@@ -4,12 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.mazenrashed.universalbluethootprinter.BluetoothPrinter
+import com.mazenrashed.universalbluethootprinter.Printooth
 import com.mazenrashed.universalbluethootprinter.data.DefaultPrinter
-import com.mazenrashed.universalbluethootprinter.data.PairedPrinter
 import com.mazenrashed.universalbluethootprinter.data.Printable
 import com.mazenrashed.universalbluethootprinter.ui.ScanningActivity
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,17 +16,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         print.setOnClickListener {
-            if (!BluetoothPrinter.hasPairedPrinter())
+            if (!Printooth.hasPairedPrinter())
                 startActivityForResult(Intent(this, ScanningActivity::class.java), ScanningActivity.SCANNING_FOR_PRINTER)
             else
                 printSomePrintables()
         }
 
-        piarUnpair.text = if (BluetoothPrinter.hasPairedPrinter()) "Unpair ${BluetoothPrinter.getPairedPrinter()?.name}" else "Pair with printer"
+        piarUnpair.text = if (Printooth.hasPairedPrinter()) "Unpair ${Printooth.getPairedPrinter()?.name}" else "Pair with printer"
 
         piarUnpair.setOnClickListener {
-            if (BluetoothPrinter.hasPairedPrinter())
-                BluetoothPrinter.removeCurrentPrinter()
+            if (Printooth.hasPairedPrinter())
+                Printooth.removeCurrentPrinter()
             else
                 startActivityForResult(Intent(this, ScanningActivity::class.java), ScanningActivity.SCANNING_FOR_PRINTER)
         }
@@ -82,7 +80,7 @@ class MainActivity : AppCompatActivity() {
                         .build()
         )
 
-        BluetoothPrinter.printer(this).print(printables)
+        Printooth.printer(this).print(printables)
 
 
     }
