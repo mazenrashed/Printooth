@@ -102,8 +102,8 @@ Printooth.printer().printingCallback = object : PrintingCallback {
 ```kotlin
 var printer1 = PairedPrinter(name, address)  
 var printer2 = PairedPrinter(name, address)  
-BluetoothPrinter.printer(printer1, this).print(printables)  
-BluetoothPrinter.printer(printer2, this).print(printables)
+BluetoothPrinter.printer(printer1).print(printables)  
+BluetoothPrinter.printer(printer2).print(printables)
 ```
 ### If you have a printer with deferent commands
 
