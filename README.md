@@ -1,7 +1,8 @@
-# Universal Bluetooth Printer
-[![](https://jitpack.io/v/mazenrashed/Universal-Bluetooth-Printer.svg)](https://jitpack.io/#mazenrashed/Universal-Bluetooth-Printer)
 
-UBP aim is to provide a simple abstraction for use the bluetooth printers regardless of its brand.
+# Printooth
+[![](https://jitpack.io/v/mazenrashed/Printooth.svg)](https://jitpack.io/#mazenrashed/Printooth)
+
+Printooth aim is to provide a simple abstraction for use the bluetooth printers regardless of its brand.
 
 ###  Add the JitPack repository to your build file
 ```groovy
@@ -15,7 +16,7 @@ allprojects {
 ### Add dependency
 ```groovy
 dependencies {
-	implementation 'com.github.mazenrashed:Universal-Bluetooth-Printer:1.0.0'
+	implementation 'com.github.mazenrashed:Printooth:1.0.1'
 }
 ```
 ### Add persessions to manifest
@@ -23,13 +24,13 @@ dependencies {
 <uses-permission android:name="android.permission.BLUETOOTH" />  
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 ```
-### Initialize UBP
+### Initialize Printooth
 Should be initialized once in `Application.onCreate()`:
 ```kotlin
-UBP.init(context);
+Printooth.init(context);
 ```
 ### Scan and pair printer
-UBP is providing a scanning activity to make pairing process easy. Just start `ScanningActivity` and you will skip the process of pairing and saving printer.
+Printooth is providing a scanning activity to make pairing process easy. Just start `ScanningActivity` and you will skip the process of pairing and saving printer.
 ```kotlin
 startActivityForResult(Intent(this, ScanningActivity::class.java), ScanningActivity.SCANNING_FOR_PRINTER)
 ```
@@ -41,24 +42,24 @@ override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) 
         //Printer is ready now 
 }
 ```
-If you want to make your own user interface, you can pass your paired printer to UBP like this:
+If you want to make your own user interface, you can pass your paired printer to Printooth like this:
 ```kotlin
-UBP.setPrinter(printerName, printerAddress)
+Printooth.setPrinter(printerName, printerAddress)
 ```
-Check if UBP has saved printer:
+Check if Printooth has saved printer:
 ```kotlin
-UBP.hasPairedPrinter()
+Printooth.hasPairedPrinter()
 ```
 To get current saved printer:
 ```kotlin
-UBP.getPairedPrinter()
+Printooth.getPairedPrinter()
 ```
 To remove current saved printer:
 ```kotlin
-UBP.removeCurrentPrinter()
+Printooth.removeCurrentPrinter()
 ```
 ### Printing
-UBP provide a simple builder to design your paper.
+Printooth provide a simple builder to design your paper.
 To print `Hello World` simply, write this code:
 ```kotlin
 var printables = ArrayList<Printable>()
@@ -82,6 +83,20 @@ var printable = Printable.PrintableBuilder()
         .build()
 printables.add(printable)
 BluetoothPrinter.printer(this).print(printables)
+```
+### Listen to your printing order state:
+```kotlin
+Printooth.printer(context).printingCallback = object : PrintingCallback {  
+    override fun connectingWithPrinter() { } 
+  
+    override fun printingOrderSentSuccessfully() { }  //printer was received your printing order successfully.
+  
+    override fun connectionFailed(error: String) { }  
+  
+    override fun onError(error: String) { }  
+  
+    override fun onMessage(message: String) { }  
+}
 ```
 ### Use more than printer in the same time:
 ```kotlin
@@ -113,7 +128,7 @@ Create a class from type `Printer` and override the initializers method, then re
     override fun initFeedLineCommand(): ByteArray = byteArrayOf(27, 100)  
 }
 ```
-Then pass your printer class to UBP:
+Then pass your printer class to Printooth:
 ```kotlin
 BluetoothPrinter.printer(SomePrinter(), this).print(printables)
 ```
