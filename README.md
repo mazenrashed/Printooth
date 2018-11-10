@@ -66,7 +66,7 @@ var printables = ArrayList<Printable>()
 var printable = Printable.PrintableBuilder()  
         .setText("Hello World")
 printables.add(printable)
-BluetoothPrinter.printer(this).print(printables)
+BluetoothPrinter.printer().print(printables)
 ```
 Use all builder responsibilities:
 ```kotlin
@@ -82,11 +82,11 @@ var printable = Printable.PrintableBuilder()
         .setNewLinesAfter(1) // To provide n lines after sentence
         .build()
 printables.add(printable)
-BluetoothPrinter.printer(this).print(printables)
+BluetoothPrinter.printer().print(printables)
 ```
 ### Listen to your printing order state:
 ```kotlin
-Printooth.printer(context).printingCallback = object : PrintingCallback {  
+Printooth.printer().printingCallback = object : PrintingCallback {  
     override fun connectingWithPrinter() { } 
   
     override fun printingOrderSentSuccessfully() { }  //printer was received your printing order successfully.
@@ -130,7 +130,7 @@ Create a class from type `Printer` and override the initializers method, then re
 ```
 Then pass your printer class to Printooth:
 ```kotlin
-BluetoothPrinter.printer(SomePrinter(), this).print(printables)
+BluetoothPrinter.printer(SomePrinter()).print(printables)
 ```
 
 ### Proguard config
