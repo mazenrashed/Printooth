@@ -43,9 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun printSomePrintable() {
-        val printing = Printooth.printer(this)
-
-        printing.printingCallback = object : PrintingCallback {
+        Printooth.printer().printingCallback = object : PrintingCallback {
             override fun connectingWithPrinter() {
                 Toast.makeText(this@MainActivity, "Connecting with printer", Toast.LENGTH_SHORT).show()
             }
@@ -70,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
         val printable = getSomePrintables()
 
-        printing.print(printable)
+        Printooth.printer().print(printable)
     }
 
     private fun getSomePrintables() = ArrayList<Printable>().apply {
