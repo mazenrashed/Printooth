@@ -8,8 +8,8 @@ import com.mazenrashed.universalbluethootprinter.Printooth
 import com.mazenrashed.universalbluethootprinter.data.DefaultPrinter
 import com.mazenrashed.universalbluethootprinter.data.Printable
 import com.mazenrashed.universalbluethootprinter.ui.ScanningActivity
-import kotlinx.android.synthetic.main.activity_main.piarUnpair
-import kotlinx.android.synthetic.main.activity_main.print
+import kotlinx.android.synthetic.main.activity_main.btnPiarUnpair
+import kotlinx.android.synthetic.main.activity_main.btnPrint
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,26 +17,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        print.setOnClickListener {
-            if (!Printooth.hasPairedPrinter())
-                startActivityForResult(Intent(this, ScanningActivity::class.java), ScanningActivity.SCANNING_FOR_PRINTER)
-            else
-                printSomePrintables()
+        btnPrint.setOnClickListener {
+            if (!Printooth.hasPairedPrinter()) startActivityForResult(Intent(this,
+                        ScanningActivity::class.java),
+                        ScanningActivity.SCANNING_FOR_PRINTER)
+            else printSomePrintable()
         }
 
-        piarUnpair.text = if (Printooth.hasPairedPrinter()) "Unpair ${Printooth.getPairedPrinter()?.name}" else "Pair with printer"
+        btnPiarUnpair.text = if (Printooth.hasPairedPrinter()) "Unpair ${Printooth.getPairedPrinter()?.name}" else "Pair with printer"
 
-        piarUnpair.setOnClickListener {
-            if (Printooth.hasPairedPrinter())
-                Printooth.removeCurrentPrinter()
-            else
-                startActivityForResult(Intent(this, ScanningActivity::class.java), ScanningActivity.SCANNING_FOR_PRINTER)
+        btnPiarUnpair.setOnClickListener {
+            if (Printooth.hasPairedPrinter()) Printooth.removeCurrentPrinter()
+            else startActivityForResult(Intent(this, ScanningActivity::class.java),
+                    ScanningActivity.SCANNING_FOR_PRINTER)
         }
     }
 
-    private fun printSomePrintables() {
-        var printables = ArrayList<Printable>()
-        printables.add(
+    private fun printSomePrintable() {
+        val printable = ArrayList<Printable>()
+        printable.add(
                 Printable.PrintableBuilder()
                         .setText("Hello World")
                         .setLineSpacing(DefaultPrinter.LINE_SPACING_60)
@@ -48,7 +47,7 @@ class MainActivity : AppCompatActivity() {
                         .setNewLinesAfter(1)
                         .build()
         )
-        printables.add(
+        printable.add(
                 Printable.PrintableBuilder()
                         .setText("Hello World")
                         .setAlignment(DefaultPrinter.ALLIGMENT_LEFT)
@@ -59,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                         .setNewLinesAfter(1)
                         .build()
         )
-        printables.add(
+        printable.add(
                 Printable.PrintableBuilder()
                         .setText("Hello World")
                         .setAlignment(DefaultPrinter.ALLIGMENT_REGHT)
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                         .setNewLinesAfter(1)
                         .build()
         )
-        printables.add(
+        printable.add(
                 Printable.PrintableBuilder()
                         .setText("اختبار العربية")
                         .setAlignment(DefaultPrinter.ALLIGMENT_CENTER)
@@ -82,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                         .build()
         )
 
-        Printooth.printer(this).print(printables)
+        Printooth.printer(this).print(printable)
 
 
     }
@@ -90,6 +89,6 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ScanningActivity.SCANNING_FOR_PRINTER && resultCode == Activity.RESULT_OK)
-            printSomePrintables()
+            printSomePrintable()
     }
 }
