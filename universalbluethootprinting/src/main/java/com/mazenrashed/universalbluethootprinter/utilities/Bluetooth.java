@@ -10,9 +10,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Looper;
+import android.widget.Toast;
 
 import com.mazenrashed.universalbluethootprinter.data.BluetoothCallback;
 import com.mazenrashed.universalbluethootprinter.data.DeviceCallback;
+import com.mazenrashed.universalbluethootprinter.data.DiscoveryCallback;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,8 +24,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import com.mazenrashed.universalbluethootprinter.data.DiscoveryCallback;
 
 public class Bluetooth {
     private static final int REQUEST_ENABLE_BT = 1111;
@@ -40,26 +40,6 @@ public class Bluetooth {
 
     private DeviceCallback deviceCallback;
     private DiscoveryCallback discoveryCallback;
-    private BluetoothCallback bluetoothCallback;
-    private boolean connected;
-
-    public Bluetooth(Context context) {
-        initialize(context, UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
-    }
-
-    public Bluetooth(Context context, UUID uuid) {
-        initialize(context, uuid);
-    }
-
-    private void initialize(Context context, UUID uuid) {
-        this.context = context;
-        this.uuid = uuid;
-        this.deviceCallback = null;
-        this.discoveryCallback = null;
-        this.bluetoothCallback = null;
-        this.connected = false;
-    }
-
     private final BroadcastReceiver pairReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -81,19 +61,7 @@ public class Bluetooth {
             }
         }
     };
-
-    public void onStop() {
-        context.unregisterReceiver(bluetoothReceiver);
-    }
-
-    public void enable() {
-        if (bluetoothAdapter != null) {
-            if (!bluetoothAdapter.isEnabled()) {
-                bluetoothAdapter.enable();
-            }
-        }
-    }
-
+    private BluetoothCallback bluetoothCallback;
     private final BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -119,24 +87,7 @@ public class Bluetooth {
             }
         }
     };
-
-    public void connectToAddress(String address, boolean insecureConnection) {
-        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
-        connectToDevice(device, insecureConnection);
-    }
-
-    public void connectToAddress(String address) {
-        connectToAddress(address, false);
-    }
-
-    public void connectToDevice(BluetoothDevice device, boolean insecureConnection) {
-        new ConnectThread(device, insecureConnection).start();
-    }
-
-    public boolean isConnected() {
-        return connected;
-    }
-
+    private boolean connected;
     private BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -171,6 +122,52 @@ public class Bluetooth {
         }
     };
 
+    public Bluetooth(Context context) {
+        initialize(context, UUID.fromString("00001101-0000-1000-8000-00805f9b34fb"));
+    }
+
+    public Bluetooth(Context context, UUID uuid) {
+        initialize(context, uuid);
+    }
+
+    private void initialize(Context context, UUID uuid) {
+        this.context = context;
+        this.uuid = uuid;
+        this.deviceCallback = null;
+        this.discoveryCallback = null;
+        this.bluetoothCallback = null;
+        this.connected = false;
+    }
+
+    public void onStop() {
+        context.unregisterReceiver(bluetoothReceiver);
+    }
+
+    public void enable() {
+        if (bluetoothAdapter != null) {
+            if (!bluetoothAdapter.isEnabled()) {
+                bluetoothAdapter.enable();
+            }
+        }
+    }
+
+    public void connectToAddress(String address, boolean insecureConnection) {
+        BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
+        connectToDevice(device, insecureConnection);
+    }
+
+    public void connectToAddress(String address) {
+        connectToAddress(address, false);
+    }
+
+    public void connectToDevice(BluetoothDevice device, boolean insecureConnection) {
+        new ConnectThread(device, insecureConnection).start();
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
     public void send(byte[] msg) {
         sendMessage(msg);
     }
@@ -186,7 +183,12 @@ public class Bluetooth {
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         context.registerReceiver(scanReceiver, filter);
-        bluetoothAdapter.startDiscovery();
+
+        if (bluetoothAdapter != null) {
+            bluetoothAdapter.startDiscovery();
+        } else {
+            Toast.makeText(context, "the bluetooth has not exist on your device", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onStart() {
