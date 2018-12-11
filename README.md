@@ -1,6 +1,7 @@
 
 # Printooth
 [![](https://jitpack.io/v/mazenrashed/Printooth.svg)](https://jitpack.io/#mazenrashed/Printooth)
+
 Printooth aim is to provide a simple abstraction for use the bluetooth printers regardless of its brand.
 
 ###  Add the JitPack repository to your build file
