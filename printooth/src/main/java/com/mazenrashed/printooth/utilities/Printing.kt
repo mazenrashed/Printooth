@@ -5,17 +5,33 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import com.mazenrashed.printooth.data.*
+import com.mazenrashed.printooth.data.BluetoothCallback
 
 
-class Printing(private var printer: Printer,private var pairedPrinter: PairedPrinter, context: Context) {
+class Printing(private var printer: Printer, private var pairedPrinter: PairedPrinter, context: Context) {
     private lateinit var printables: ArrayList<Printable>
     private var bluetooth = Bluetooth(context)
     var printingCallback: PrintingCallback? = null
 
     init {
-        bluetooth.onStart()
-        if (!bluetooth.isEnabled) bluetooth.enable()
+        initBluetoothCallback()
         initDeviceCallback()
+    }
+
+    private fun initBluetoothCallback() {
+        bluetooth.setBluetoothCallback(object : BluetoothCallback {
+            override fun onBluetoothTurningOn() {}
+
+            override fun onBluetoothOn() {
+                bluetooth.connectToAddress(pairedPrinter.address)
+            }
+
+            override fun onBluetoothTurningOff() {}
+
+            override fun onBluetoothOff() {}
+
+            override fun onUserDeniedActivation() {}
+        })
     }
 
     private fun initDeviceCallback() {
@@ -66,7 +82,8 @@ class Printing(private var printer: Printer,private var pairedPrinter: PairedPri
     fun print(printables: ArrayList<Printable>) {
         this.printables = printables
         printingCallback?.connectingWithPrinter()
-        bluetooth.connectToAddress(pairedPrinter.address)
+        bluetooth.onStart()
+        if (!bluetooth.isEnabled) bluetooth.enable() else bluetooth.connectToAddress(pairedPrinter.address)
     }
 
 }

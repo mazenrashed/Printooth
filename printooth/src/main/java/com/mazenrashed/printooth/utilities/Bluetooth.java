@@ -279,6 +279,10 @@ public class Bluetooth {
         }
     }
 
+    public void setBluetoothCallback(BluetoothCallback bluetoothCallback){
+        this.bluetoothCallback = bluetoothCallback;
+    }
+
     private class ConnectThread extends Thread {
         ConnectThread(BluetoothDevice device, boolean insecureConnection) {
             Bluetooth.this.device = device;
