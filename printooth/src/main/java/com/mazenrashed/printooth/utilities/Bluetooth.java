@@ -175,6 +175,16 @@ public class Bluetooth {
         sendMessage(msg);
     }
 
+    public void sendImage(byte[] byteArray){
+        try {
+            out.write(byteArray);
+            out.write(new byte[]{0x0b, 0x0c});
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public List<BluetoothDevice> getPairedDevices() {
         return new ArrayList<>(bluetoothAdapter.getBondedDevices());
     }

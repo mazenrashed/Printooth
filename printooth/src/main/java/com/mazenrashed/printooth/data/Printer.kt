@@ -9,6 +9,7 @@ abstract class Printer {
     var characterCodeCommand = initCharacterCodeCommand()
     var feedLineCommand = initFeedLineCommand()
     var lineSpacingCommand = initLineSpacingCommand()
+    var printingImagesHelper:PrintingImagesHelper = initPrintingImagesHelper()
 
     abstract fun initInitPrinterCommand(): ByteArray
     abstract fun initJustificationCommand(): ByteArray
@@ -18,5 +19,6 @@ abstract class Printer {
     abstract fun initCharacterCodeCommand(): ByteArray
     abstract fun initFeedLineCommand(): ByteArray
     abstract fun initLineSpacingCommand(): ByteArray
+    abstract fun initPrintingImagesHelper(): PrintingImagesHelper
 
 }

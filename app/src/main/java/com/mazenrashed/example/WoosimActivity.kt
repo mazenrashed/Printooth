@@ -13,13 +13,13 @@ import com.mazenrashed.printooth.utilities.Printing
 import com.mazenrashed.printooth.utilities.PrintingCallback
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class WoosimActivity : AppCompatActivity() {
 
-    private val printing = Printooth.printer()
+    private val printing = Printooth.printer(WoosimPrinter())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_woosim)
         initViews()
         initListeners()
     }
@@ -50,29 +50,25 @@ class MainActivity : AppCompatActivity() {
             initViews()
         }
 
-        btnCustomPrinter.setOnClickListener {
-            startActivity(Intent(this, WoosimActivity::class.java))
-        }
-
         printing.printingCallback = object : PrintingCallback {
             override fun connectingWithPrinter() {
-                Toast.makeText(this@MainActivity, "Connecting with printer", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@WoosimActivity, "Connecting with printer", Toast.LENGTH_SHORT).show()
             }
 
             override fun printingOrderSentSuccessfully() {
-                Toast.makeText(this@MainActivity, "Order sent to printer", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@WoosimActivity, "Order sent to printer", Toast.LENGTH_SHORT).show()
             }
 
             override fun connectionFailed(error: String) {
-                Toast.makeText(this@MainActivity, "Failed to connect printer", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@WoosimActivity, "Failed to connect printer", Toast.LENGTH_SHORT).show()
             }
 
             override fun onError(error: String) {
-                Toast.makeText(this@MainActivity, error, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@WoosimActivity, error, Toast.LENGTH_SHORT).show()
             }
 
             override fun onMessage(message: String) {
-                Toast.makeText(this@MainActivity, "Message: $message", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@WoosimActivity, "Message: $message", Toast.LENGTH_SHORT).show()
             }
 
         }
@@ -85,7 +81,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun printSomeImages() {
         val printables = ArrayList<Printable>().apply {
-            add(Printable.PrintableBuilder().setImage(R.drawable.image1, resources).build())
+            add(
+                    Printable.PrintableBuilder()
+                            .setImage(R.drawable.image1, resources)
+                            .setAlignment(WoosimPrinter.ALLIGMENT_REGHT)
+                            .setFontSize(WoosimPrinter.FONT_SIZE_LARGE)
+                            .build()
+            )
             add(Printable.PrintableBuilder().setImage(R.drawable.image2, resources).build())
             add(Printable.PrintableBuilder().setImage(R.drawable.image3, resources).build())
         }

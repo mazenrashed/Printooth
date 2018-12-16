@@ -33,13 +33,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnPrintImages" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/btnCustomPrinter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Custom printer (woosim)"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnPiarUnpair" />
-
 </android.support.constraint.ConstraintLayout>

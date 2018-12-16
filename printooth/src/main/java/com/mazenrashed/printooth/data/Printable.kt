@@ -1,5 +1,9 @@
 package com.mazenrashed.printooth.data
 
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+
 data class Printable private constructor(val text: String,
                                          val fontSize: Byte,
                                          val alignment: Byte,
@@ -7,7 +11,8 @@ data class Printable private constructor(val text: String,
                                          val bold: Byte,
                                          val underlined: Byte,
                                          val characterCode: Byte,
-                                         val lineSpacing: Byte) {
+                                         val lineSpacing: Byte,
+                                         val image: Bitmap?) {
 
     class PrintableBuilder {
         private var text = ""
@@ -18,6 +23,7 @@ data class Printable private constructor(val text: String,
         private var underlined: Byte = DefaultPrinter.UNDELINED_MODE_OFF
         private var characterCode: Byte = DefaultPrinter.CHARACTER_CODE_USA_CP437
         private var lineSpacing: Byte = DefaultPrinter.LINE_SPACING_30
+        private var image: Bitmap? = null
 
         fun setText(text: String): PrintableBuilder {
             this.text = text
@@ -59,8 +65,13 @@ data class Printable private constructor(val text: String,
             return this
         }
 
+        fun setImage(src: Int, resources: Resources): PrintableBuilder {
+            this.image = BitmapFactory.decodeResource(resources, src)
+            return this
+        }
+
         fun build(): Printable {
-            return Printable(text, fontSize, alignment, newLinesAfter, bold, underlined, characterCode, lineSpacing)
+            return Printable(text, fontSize, alignment, newLinesAfter, bold, underlined, characterCode, lineSpacing, image)
         }
     }
 

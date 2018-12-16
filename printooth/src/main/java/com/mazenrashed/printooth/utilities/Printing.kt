@@ -7,8 +7,7 @@ import android.os.Looper
 import com.mazenrashed.printooth.data.*
 import com.mazenrashed.printooth.data.BluetoothCallback
 
-
-class Printing(private var printer: Printer, private var pairedPrinter: PairedPrinter, context: Context) {
+class Printing(private var printer: Printer, private var pairedPrinter: PairedPrinter, val context: Context) {
     private lateinit var printables: ArrayList<Printable>
     private var bluetooth = Bluetooth(context)
     var printingCallback: PrintingCallback? = null
@@ -67,7 +66,11 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
             bluetooth.send(printer.underlineModeCommand.plus(it.underlined))
             bluetooth.send(printer.characterCodeCommand.plus(it.characterCode))
             bluetooth.send(printer.lineSpacingCommand.plus(it.lineSpacing))
-            bluetooth.send(StringUtils.getStringAsByteArray(it.text))
+            if (it.image != null) {
+                bluetooth.sendImage(printer.printingImagesHelper.getBitmapAsByteArray(it.image))
+            } else {
+                bluetooth.send(StringUtils.getStringAsByteArray(it.text))
+            }
             if (it.newLinesAfter > 0)
                 bluetooth.send(printer.feedLineCommand.plus(it.newLinesAfter.toByte()))
         }
@@ -85,5 +88,4 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
         bluetooth.onStart()
         if (!bluetooth.isEnabled) bluetooth.enable() else bluetooth.connectToAddress(pairedPrinter.address)
     }
-
 }
