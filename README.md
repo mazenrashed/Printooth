@@ -16,7 +16,7 @@ allprojects {
 ### Add dependency
 ```groovy
 dependencies {
-	implementation 'com.github.mazenrashed:Printooth:1.0.3'
+	implementation 'com.github.mazenrashed:Printooth:${LAST_VERSION}'
 }
 ```
 ### Add persessions to manifest
