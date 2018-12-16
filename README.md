@@ -1,4 +1,5 @@
 
+
 # Printooth
 [![](https://jitpack.io/v/mazenrashed/Printooth.svg)](https://jitpack.io/#mazenrashed/Printooth)
 Printooth aim is to provide a simple abstraction for use the bluetooth printers regardless of its brand.
@@ -108,7 +109,7 @@ BluetoothPrinter.printer(printer2).print(printables)
 
 Create a class from type `Printer` and override the initializers method, then return your printer commands from the printers command sheet ( You can find it on the Internet ), lets take an example:
  ```kotlin
- open class SomePrinter : Printer() {  
+ open class MyPrinter : Printer() {  
   
     override fun initLineSpacingCommand(): ByteArray = byteArrayOf(0x1B, 0x33)  
   
@@ -125,11 +126,31 @@ Create a class from type `Printer` and override the initializers method, then re
     override fun initCharacterCodeCommand(): ByteArray = byteArrayOf(27, 116)  
   
     override fun initFeedLineCommand(): ByteArray = byteArrayOf(27, 100)  
+    
+    override fun initPrintingImagesHelper(): PrintingImagesHelper = DefaultPrintingImagesHelper()
 }
+```
+If you have issues with printing images, you can implement the process of transfaring image from bitmap to ByteArray manuly by extends PrintingImagesHelper class and implement getBitmapAsByteArray, then you shold return an object from your helper to initPrintingImagesHelper() as this example:
+```kotlin
+class MyPrintingImagesHelper : PrintingImagesHelper {  
+    override fun getBitmapAsByteArray(bitmap: Bitmap): ByteArray {  
+        return convertBitmapToByteArray(bitmap)  
+    }  
+}
+//in your printer class
+open class MyPrinter : Printer() {  
+    ....
+    ....
+    override fun initPrintingImagesHelper(): PrintingImagesHelper = MyPrintingImagesHelper()
+}
+//when using printooth
+private val printing = Printooth.printer(MyPrinter())
+...
+printing.print(printables)
 ```
 Then pass your printer class to Printooth:
 ```kotlin
-BluetoothPrinter.printer(SomePrinter()).print(printables)
+BluetoothPrinter.printer(MyPrinter()).print(printables)
 ```
 
 ### Proguard config
