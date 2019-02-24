@@ -19,7 +19,7 @@ dependencies {
 	implementation 'com.github.mazenrashed:Printooth:${LAST_VERSION}'
 }
 ```
-### Add persessions to manifest
+### Add permissions to manifest
 ```groovy
 <uses-permission android:name="android.permission.BLUETOOTH" />  
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
