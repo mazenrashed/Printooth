@@ -68,7 +68,7 @@ var printable = Printable.PrintableBuilder()
 printables.add(printable)
 BluetoothPrinter.printer().print(printables)
 ```
-Use all builder responsibilities:
+Use all builder functionalities:
 ```kotlin
 var printables = ArrayList<Printable>()
 var printable = Printable.PrintableBuilder()  
