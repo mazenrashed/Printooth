@@ -4,21 +4,21 @@
 [![](https://jitpack.io/v/mazenrashed/Printooth.svg)](https://jitpack.io/#mazenrashed/Printooth)
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-Printooth-green.svg?style=flat )]( https://android-arsenal.com/details/1/7323 )
 
-Printooth aim is to provide a simple abstraction for use the bluetooth printers regardless of its brand.
+Printooth aim is to provide a simple abstraction for use the Bluetooth printers regardless of its brand.
 
 ###  Add the JitPack repository to your build file
 ```groovy
 allprojects {
-	repositories {
-		...
-		maven { url 'https://jitpack.io' }
-	}
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
 }
 ```
 ### Add dependency
 ```groovy
 dependencies {
-	implementation 'com.github.mazenrashed:Printooth:${LAST_VERSION}'
+    implementation 'com.github.mazenrashed:Printooth:${LAST_VERSION}'
 }
 ```
 ### Add permissions to manifest
@@ -52,16 +52,16 @@ Check if Printooth has saved printer:
 ```kotlin
 Printooth.hasPairedPrinter()
 ```
-To get current saved printer:
+To get the current saved printer:
 ```kotlin
 Printooth.getPairedPrinter()
 ```
-To remove current saved printer:
+To remove the current saved printer:
 ```kotlin
 Printooth.removeCurrentPrinter()
 ```
 ### Printing
-Printooth provide a simple builder to design your paper.
+Printooth provides a simple builder to design your paper.
 To print `Hello World` simply, write this code:
 ```kotlin
 var printables = ArrayList<Printable>()
@@ -109,7 +109,7 @@ BluetoothPrinter.printer(printer2).print(printables)
 ```
 ### If you have a printer with deferent commands
 
-Create a class from type `Printer` and override the initializers method, then return your printer commands from the printers command sheet ( You can find it on the Internet ), lets take an example:
+Create a class from type `Printer` and override the initializers method, then return your printer commands from the printers command sheet ( You can find it on the Internet ), let's take an example:
  ```kotlin
  open class MyPrinter : Printer() {  
   
