@@ -159,3 +159,8 @@ BluetoothPrinter.printer(MyPrinter()).print(printables)
 ````
 -keep class * implements java.io.Serializable { *; }
 ````
+## Contributing
+
+We welcome contributions to Printooth!
+* ⇄ Pull requests and ★ Stars are always welcome.
+
