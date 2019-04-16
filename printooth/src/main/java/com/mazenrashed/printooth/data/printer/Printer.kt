@@ -1,4 +1,7 @@
-package com.mazenrashed.printooth.data
+package com.mazenrashed.printooth.data.printer
+
+import com.mazenrashed.printooth.data.PrintingImagesHelper
+import com.mazenrashed.printooth.data.converter.Converter
 
 abstract class Printer {
     var initPrinterCommand = initInitPrinterCommand()
@@ -9,7 +12,8 @@ abstract class Printer {
     var characterCodeCommand = initCharacterCodeCommand()
     var feedLineCommand = initFeedLineCommand()
     var lineSpacingCommand = initLineSpacingCommand()
-    var printingImagesHelper:PrintingImagesHelper = initPrintingImagesHelper()
+    var printingImagesHelper: PrintingImagesHelper = initPrintingImagesHelper()
+    var converter: Converter = useConverter()
 
     abstract fun initInitPrinterCommand(): ByteArray
     abstract fun initJustificationCommand(): ByteArray
@@ -20,5 +24,5 @@ abstract class Printer {
     abstract fun initFeedLineCommand(): ByteArray
     abstract fun initLineSpacingCommand(): ByteArray
     abstract fun initPrintingImagesHelper(): PrintingImagesHelper
-
+    abstract fun useConverter(): Converter
 }
