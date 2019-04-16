@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getSomePrintables() = ArrayList<Printable>().apply {
-        add(RawPrintable.Builder(byteArrayOf(27, 82, 0)).build())
+        add(RawPrintable.Builder(byteArrayOf(27, 100, 4)).build()) // feed lines example in raw mode
 
         add(TextPrintable.Builder()
                 .setText(" Hello World : été è à '€' içi Bò Xào Coi Xanh")
