@@ -2,9 +2,9 @@ package com.mazenrashed.printooth
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.mazenrashed.printooth.data.DefaultPrinter
 import com.mazenrashed.printooth.data.PairedPrinter
-import com.mazenrashed.printooth.data.Printer
+import com.mazenrashed.printooth.data.printer.DefaultPrinter
+import com.mazenrashed.printooth.data.printer.Printer
 import com.mazenrashed.printooth.utilities.Printing
 import io.paperdb.Paper
 

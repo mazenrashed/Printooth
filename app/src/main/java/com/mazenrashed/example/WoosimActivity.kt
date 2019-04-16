@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.mazenrashed.printooth.Printooth
-import com.mazenrashed.printooth.data.DefaultPrinter
-import com.mazenrashed.printooth.data.Printable
+import com.mazenrashed.printooth.data.printable.ImagePrintable
+import com.mazenrashed.printooth.data.printable.Printable
+import com.mazenrashed.printooth.data.printable.TextPrintable
+import com.mazenrashed.printooth.data.printer.DefaultPrinter
 import com.mazenrashed.printooth.ui.ScanningActivity
-import com.mazenrashed.printooth.utilities.Printing
 import com.mazenrashed.printooth.utilities.PrintingCallback
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -80,51 +81,48 @@ class WoosimActivity : AppCompatActivity() {
     }
 
     private fun printSomeImages() {
-        val printables = ArrayList<Printable>().apply {
-            add(
-                    Printable.PrintableBuilder()
-                            .setImage(R.drawable.image1, resources)
-                            .setAlignment(WoosimPrinter.ALLIGMENT_REGHT)
-                            .setFontSize(WoosimPrinter.FONT_SIZE_LARGE)
-                            .build()
-            )
-            add(Printable.PrintableBuilder().setImage(R.drawable.image2, resources).build())
-            add(Printable.PrintableBuilder().setImage(R.drawable.image3, resources).build())
-        }
+        val printables = arrayListOf<Printable>(
+                ImagePrintable.Builder(R.drawable.image1, resources)
+                        .setAlignment(DefaultPrinter.ALIGNMENT_RIGHT)
+                        .build(),
+                ImagePrintable.Builder(R.drawable.image2, resources).build(),
+                ImagePrintable.Builder(R.drawable.image3, resources).build()
+        )
+
         printing.print(printables)
     }
 
     private fun getSomePrintables() = ArrayList<Printable>().apply {
-        add(Printable.PrintableBuilder()
+        add(TextPrintable.Builder()
                 .setText("Hello World")
                 .setFontSize(DefaultPrinter.FONT_SIZE_LARGE)
                 .setNewLinesAfter(1)
                 .build())
 
-        add(Printable.PrintableBuilder()
+        add(TextPrintable.Builder()
                 .setText("Hello World")
                 .setLineSpacing(DefaultPrinter.LINE_SPACING_60)
-                .setAlignment(DefaultPrinter.ALLIGMENT_CENTER)
-                .setEmphasizedMode(DefaultPrinter.EMPHASISED_MODE_BOLD)
-                .setUnderlined(DefaultPrinter.UNDELINED_MODE_ON)
+                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
+                .setUnderlined(DefaultPrinter.UNDERLINED_MODE_ON)
                 .setNewLinesAfter(1)
                 .build())
 
-        add(Printable.PrintableBuilder()
+        add(TextPrintable.Builder()
                 .setText("Hello World")
-                .setAlignment(DefaultPrinter.ALLIGMENT_REGHT)
-                .setEmphasizedMode(DefaultPrinter.EMPHASISED_MODE_BOLD)
-                .setUnderlined(DefaultPrinter.UNDELINED_MODE_ON)
+                .setAlignment(DefaultPrinter.ALIGNMENT_RIGHT)
+                .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
+                .setUnderlined(DefaultPrinter.UNDERLINED_MODE_ON)
                 .setNewLinesAfter(1)
                 .build())
 
-        add(Printable.PrintableBuilder()
+        add(TextPrintable.Builder()
                 .setText("اختبار العربية")
-                .setAlignment(DefaultPrinter.ALLIGMENT_CENTER)
-                .setEmphasizedMode(DefaultPrinter.EMPHASISED_MODE_BOLD)
+                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
+                .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
                 .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
-                .setUnderlined(DefaultPrinter.UNDELINED_MODE_ON)
-                .setCharacterCode(DefaultPrinter.CHARACTER_CODE_ARABIC_FARISI)
+                .setUnderlined(DefaultPrinter.UNDERLINED_MODE_ON)
+                .setCharacterCode(DefaultPrinter.CHARCODE_ARABIC_FARISI)
                 .setNewLinesAfter(1)
                 .build())
     }

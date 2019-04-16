@@ -4,13 +4,17 @@ import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
-import com.mazenrashed.printooth.data.*
 import com.mazenrashed.printooth.data.BluetoothCallback
+import com.mazenrashed.printooth.data.DeviceCallback
+import com.mazenrashed.printooth.data.PairedPrinter
+import com.mazenrashed.printooth.data.printable.Printable
+import com.mazenrashed.printooth.data.printer.Printer
 
 class Printing(private var printer: Printer, private var pairedPrinter: PairedPrinter, val context: Context) {
-    private lateinit var printables: ArrayList<Printable>
+    private lateinit var printables: List<Printable>
     private var bluetooth = Bluetooth(context)
     var printingCallback: PrintingCallback? = null
+    var extraLinesAtEnd: Byte = 0
 
     init {
         initBluetoothCallback()
@@ -57,25 +61,17 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
     }
 
     private fun printPrintables() {
-        //init printer
-        bluetooth.send(printer.initPrinterCommand)
+        bluetooth.send(printer.initPrinterCommand) // init printer
         this.printables.forEach {
-            bluetooth.send(printer.justificationCommand.plus(it.alignment))
-            bluetooth.send(printer.fontSizeCommand.plus(it.fontSize))
-            bluetooth.send(printer.emphasizedModeCommand.plus(it.bold))
-            bluetooth.send(printer.underlineModeCommand.plus(it.underlined))
-            bluetooth.send(printer.characterCodeCommand.plus(it.characterCode))
-            bluetooth.send(printer.lineSpacingCommand.plus(it.lineSpacing))
-            if (it.image != null) {
-                bluetooth.sendImage(printer.printingImagesHelper.getBitmapAsByteArray(it.image))
-            } else {
-                bluetooth.send(StringUtils.getStringAsByteArray(it.text))
+            it.getPrintableByteArray(printer).forEach { ops ->
+                bluetooth.send(ops)
             }
-            if (it.newLinesAfter > 0)
-                bluetooth.send(printer.feedLineCommand.plus(it.newLinesAfter.toByte()))
         }
+
         //Feed 2 lines to cut the paper
-        bluetooth.send(printer.feedLineCommand.plus(2))
+        if (extraLinesAtEnd > 0) {
+            bluetooth.send(printer.feedLineCommand.plus(extraLinesAtEnd))
+        }
 
         Handler(Looper.getMainLooper()).postDelayed({
             bluetooth.disconnect()
