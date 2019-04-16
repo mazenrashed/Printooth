@@ -65,7 +65,7 @@ Printooth provides a simple builder to design your paper.
 To print `Hello World` simply, write this code:
 ```kotlin
 var printables = ArrayList<Printable>()
-var printable = Printable.PrintableBuilder()  
+var printable = TextPrintable.Builder()  
         .setText("Hello World")
 printables.add(printable)
 BluetoothPrinter.printer().print(printables)
@@ -73,7 +73,7 @@ BluetoothPrinter.printer().print(printables)
 Use all builder functionalities:
 ```kotlin
 var printables = ArrayList<Printable>()
-var printable = Printable.PrintableBuilder()  
+var printable = TextPrintable.Builder()  
         .setText("Hello World") //The text you want to print
         .setAlignment(DefaultPrinter.ALLIGMENT_CENTER)
         .setEmphasizedMode(DefaultPrinter.EMPHASISED_MODE_BOLD) //Bold or normal  

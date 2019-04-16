@@ -1,10 +1,12 @@
 package com.mazenrashed.example
 
-import com.mazenrashed.printooth.data.DefaultPrintingImagesHelper
-import com.mazenrashed.printooth.data.Printer
 import com.mazenrashed.printooth.data.PrintingImagesHelper
+import com.mazenrashed.printooth.data.converter.ArabicConverter
+import com.mazenrashed.printooth.data.converter.Converter
+import com.mazenrashed.printooth.data.printer.Printer
 
-class WoosimPrinter : Printer(){
+class WoosimPrinter : Printer() {
+    override fun useConverter(): Converter = ArabicConverter()
 
     override fun initLineSpacingCommand(): ByteArray = byteArrayOf(0x1B, 0x33)
 
@@ -23,22 +25,5 @@ class WoosimPrinter : Printer(){
     override fun initFeedLineCommand(): ByteArray = byteArrayOf(27, 100)
 
     override fun initPrintingImagesHelper(): PrintingImagesHelper = WoosimPrintingImagesHelper()
-
-    companion object {
-        val ALLIGMENT_REGHT: Byte = 2
-        val ALLIGMENT_LEFT: Byte = 0
-        val ALLIGMENT_CENTER: Byte = 1
-        val EMPHASISED_MODE_BOLD: Byte = 1
-        val EMPHASISED_MODE_NORMAL: Byte = 0
-        val UNDELINED_MODE_ON: Byte = 1
-        val UNDELINED_MODE_OFF: Byte = 0
-        val CHARACTER_CODE_USA_CP437: Byte = 0
-        val CHARACTER_CODE_ARABIC_FARISI: Byte = 42
-        val LINE_SPACING_60: Byte = 60
-        val LINE_SPACING_30: Byte = 30
-        val FONT_SIZE_NORMAL: Byte = 0x00
-        val FONT_SIZE_LARGE: Byte = 0x10
-    }
-
 
 }
