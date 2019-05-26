@@ -13,6 +13,7 @@ import com.mazenrashed.printooth.data.printable.RawPrintable
 import com.mazenrashed.printooth.data.printable.TextPrintable
 import com.mazenrashed.printooth.data.printer.DefaultPrinter
 import com.mazenrashed.printooth.ui.ScanningActivity
+import com.mazenrashed.printooth.utilities.Printing
 import com.mazenrashed.printooth.utilities.PrintingCallback
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -59,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, WoosimActivity::class.java))
         }
 
-        printing.printingCallback = object : PrintingCallback {
+        printing?.printingCallback = object : PrintingCallback {
             override fun connectingWithPrinter() {
                 Toast.makeText(this@MainActivity, "Connecting with printer", Toast.LENGTH_SHORT).show()
             }
@@ -85,7 +86,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun printSomePrintable() {
         val printables = getSomePrintables()
-        printing.print(printables)
+        printing?.print(printables)
     }
 
     private fun printSomeImages() {
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             add(ImagePrintable.Builder(R.drawable.image2, resources).build())
             add(ImagePrintable.Builder(R.drawable.image3, resources).build())
         }
-        printing.print(printables)
+        printing?.print(printables)
     }
 
     private fun getSomePrintables() = ArrayList<Printable>().apply {
