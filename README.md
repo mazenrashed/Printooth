@@ -1,5 +1,3 @@
-
-
 # Printooth
 [![](https://jitpack.io/v/mazenrashed/Printooth.svg)](https://jitpack.io/#mazenrashed/Printooth)
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-Printooth-green.svg?style=flat )]( https://android-arsenal.com/details/1/7323 )
@@ -68,7 +66,7 @@ var printables = ArrayList<Printable>()
 var printable = TextPrintable.Builder()  
         .setText("Hello World")
 printables.add(printable)
-BluetoothPrinter.printer().print(printables)
+Printooth.printer().print(printables)
 ```
 Use all builder functionalities:
 ```kotlin
@@ -84,7 +82,7 @@ var printable = TextPrintable.Builder()
         .setNewLinesAfter(1) // To provide n lines after sentence
         .build()
 printables.add(printable)
-BluetoothPrinter.printer().print(printables)
+Printooth.printer().print(printables)
 ```
 ### Listen to your printing order state:
 ```kotlin
@@ -104,8 +102,8 @@ Printooth.printer().printingCallback = object : PrintingCallback {
 ```kotlin
 var printer1 = PairedPrinter(name, address)  
 var printer2 = PairedPrinter(name, address)  
-BluetoothPrinter.printer(printer1).print(printables)  
-BluetoothPrinter.printer(printer2).print(printables)
+Printooth.printer(printer1).print(printables)  
+Printooth.printer(printer2).print(printables)
 ```
 ### If you have a printer with deferent commands
 
@@ -152,7 +150,7 @@ printing.print(printables)
 ```
 Then pass your printer class to Printooth:
 ```kotlin
-BluetoothPrinter.printer(MyPrinter()).print(printables)
+Printooth.printer(MyPrinter()).print(printables)
 ```
 
 ### Proguard config
