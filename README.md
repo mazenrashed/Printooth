@@ -162,3 +162,6 @@ Printooth.printer(MyPrinter()).print(printables)
 We welcome contributions to Printooth!
 * ⇄ Pull requests and ★ Stars are always welcome.
 
+## Java examples
+
+Thanks for @lafras-h for the nice project [JavaPrintooth](https://github.com/lafras-h/JavaPrintooth) , it's an examples to use Printooth in java
