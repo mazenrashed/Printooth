@@ -51,8 +51,8 @@ open class DefaultPrinter : Printer() {
         val CHARCODE_HEBREW: Byte = 0x08 // Simplified Kanji
         val CHARCODE_ARABIC_CP864: Byte = 0x0E
         val CHARCODE_PC1252: Byte = 0x10 // Western European Windows Code Set
-        val CHARCODE_PC866: Byte = 0x12 // Cirillic //2
-        val CHARCODE_PC852: Byte = 0x13 // Latin 2
+        val CHARCODE_PC866: Byte = 0x11 // Cirillic //2
+        val CHARCODE_PC852: Byte = 0x12 // Latin 2
         val CHARCODE_PC858: Byte = 0x14 // Euro
         val CHARCODE_THAI42: Byte = 0x15 // Thai character code 42
         val CHARCODE_THAI11: Byte = 0x16 // Thai character code 11
