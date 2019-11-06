@@ -2,6 +2,8 @@ package com.mazenrashed.example
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
@@ -15,6 +17,11 @@ import com.mazenrashed.printooth.data.printer.DefaultPrinter
 import com.mazenrashed.printooth.ui.ScanningActivity
 import com.mazenrashed.printooth.utilities.Printing
 import com.mazenrashed.printooth.utilities.PrintingCallback
+import com.mazenrashed.txttoimg.ImageHelper
+import com.mazenrashed.txttoimg.Line
+import com.mazenrashed.txttoimg.TextInLine
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -90,12 +97,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun printSomeImages() {
-        val printables = ArrayList<Printable>().apply {
-            add(ImagePrintable.Builder(R.drawable.image1, resources).build())
-            add(ImagePrintable.Builder(R.drawable.image2, resources).build())
-            add(ImagePrintable.Builder(R.drawable.image3, resources).build())
-        }
-        printing?.print(printables)
+        ImagePrintable.Builder(getBitmap()).build()
+//        val printables = ArrayList<Printable>().apply {
+//            add(ImagePrintable.Builder(R.drawable.image1, resources).build())
+//            add(ImagePrintable.Builder(R.drawable.image2, resources).build())
+//            add(ImagePrintable.Builder(R.drawable.image3, resources).build())
+//        }
+//        printing?.print(printables)
     }
 
     private fun getSomePrintables() = ArrayList<Printable>().apply {
@@ -140,6 +148,215 @@ class MainActivity : AppCompatActivity() {
                 .setNewLinesAfter(1)
                 .setCustomConverter(ArabicConverter()) // change only the converter for this one
                 .build())
+    }
+
+    fun getBitmap(): Bitmap {
+        var texts = ArrayList<Line>()
+        texts.add(
+                Line().apply {
+
+                    this.centerText = TextInLine().apply {
+                        this.text = "Receipt"
+                        this.color = Color.BLACK
+                        this.size = 17f
+                    }
+
+                }
+        )
+        texts.add(
+                Line().apply {
+
+                    this.centerText = TextInLine().apply {
+                        this.text = "Some Market"
+                        this.color = Color.BLACK
+                        this.size = 17f
+                    }
+
+                }
+        )
+
+        texts.add(
+                Line().apply {
+                    this.leftText = TextInLine().apply {
+                        this.text = "Tax No. 23344"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+                    this.rightText = TextInLine().apply {
+                        this.text = "11/6/2020 20:16"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+
+                }
+        )
+
+        texts.add(
+                Line().apply {
+                    this.leftText = TextInLine().apply {
+                        this.text = "Cash 3"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+                    this.rightText = TextInLine().apply {
+                        this.text = "Payment type: Credit"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+
+                }
+        )
+        texts.add(
+                Line().apply {
+                    this.centerText = TextInLine().apply {
+                        this.text = "--------------------------------------------------------------------------------"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+
+                }
+        )
+
+        texts.add(
+                Line().apply {
+                    this.leftText = TextInLine().apply {
+                        this.text = "Item"
+                        this.color = Color.BLACK
+                        this.size = 15f
+                    }
+                    this.centerText = TextInLine().apply {
+                        this.text = "Qty"
+                        this.color = Color.BLACK
+                        this.size = 15f
+                    }
+                    this.rightText = TextInLine().apply {
+                        this.text = "Price"
+                        this.color = Color.BLACK
+                        this.size = 15f
+                    }
+
+                }
+        )
+        texts.add(
+                Line().apply {
+                    this.centerText = TextInLine().apply {
+                        this.text = "--------------------------------------------------------------------------------"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+
+                }
+        )
+
+        texts.add(
+                Line().apply {
+                    this.leftText = TextInLine().apply {
+                        this.text = "Hypex"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+                    this.centerText = TextInLine().apply {
+                        this.text = "2"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+                    this.rightText = TextInLine().apply {
+                        this.text = "4.3 JOD"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+
+                }
+        )
+
+        texts.add(
+                Line().apply {
+
+                    this.leftText = TextInLine().apply {
+                        this.text = "Mr.Chips"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+                    this.centerText = TextInLine().apply {
+                        this.text = "4"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+                    this.rightText = TextInLine().apply {
+                        this.text = "8.3 JOD"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+
+
+                }
+        )
+
+        texts.add(
+                Line().apply {
+                    this.leftText = TextInLine().apply {
+                        this.text = "Salt"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+                    this.centerText = TextInLine().apply {
+                        this.text = "1"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+                    this.rightText = TextInLine().apply {
+                        this.text = "2.1 JOD"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+
+                }
+        )
+
+        texts.add(
+                Line().apply {
+                    this.centerText = TextInLine().apply {
+                        this.text = "--------------------------------------------------------------------------------"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+
+                }
+        )
+        texts.add(
+                Line().apply {
+                    this.leftText = TextInLine().apply {
+                        this.text = "TOTAL"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+                    this.rightText = TextInLine().apply {
+                        this.text = "15.1 JOD"
+                        this.color = Color.BLACK
+                        this.size = 13f
+                    }
+
+                }
+        )
+        texts.add(
+                Line().apply {
+                    this.centerText = TextInLine().apply {
+                        this.text = "Thank you for shoping"
+                        this.color = Color.BLACK
+                        this.size = 17f
+                    }
+
+                }
+        )
+
+
+
+
+        return ImageHelper(resources, this).textToBitmap(texts)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .blockingGet()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
