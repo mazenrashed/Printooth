@@ -97,7 +97,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun printSomeImages() {
-        ImagePrintable.Builder(getBitmap()).build()
+        printing?.print(ArrayList<Printable>().apply { add(ImagePrintable.Builder(getBitmap()).build()) })
+
 //        val printables = ArrayList<Printable>().apply {
 //            add(ImagePrintable.Builder(R.drawable.image1, resources).build())
 //            add(ImagePrintable.Builder(R.drawable.image2, resources).build())
