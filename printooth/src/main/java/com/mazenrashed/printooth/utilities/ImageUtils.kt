@@ -77,7 +77,7 @@ object ImageUtils {
         }
 
         val commandList = ArrayList<String>()
-        commandList.add(commandHexString + widthHexString + heightHexString)
+        commandList.add(commandHexString + printLowWidthHex + printHighWidthHex + printLowHeightHex + printHighHeightHex)
         commandList.addAll(bmpHexList)
 
         return hexList2Byte(commandList)
