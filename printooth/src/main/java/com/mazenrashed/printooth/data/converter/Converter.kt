@@ -4,7 +4,7 @@ package com.mazenrashed.printooth.data.converter
  * Base class to convert a string into a byte array
  */
 abstract class Converter {
-    fun toByteArray(input: String): ByteArray {
+    open fun toByteArray(input: String): ByteArray {
         val text = convert(input)
         return try {
             var i = 0
