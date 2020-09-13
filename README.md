@@ -23,6 +23,7 @@ dependencies {
 ```groovy
 <uses-permission android:name="android.permission.BLUETOOTH" />  
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 ```
 ### Initialize Printooth
 Should be initialized once in `Application.onCreate()`:
