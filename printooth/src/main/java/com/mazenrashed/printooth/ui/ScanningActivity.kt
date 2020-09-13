@@ -5,8 +5,6 @@ import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +12,14 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_scanning.*
-import com.mazenrashed.printooth.data.DiscoveryCallback
-import com.mazenrashed.printooth.utilities.Bluetooth
+import androidx.appcompat.app.AppCompatActivity
+import com.afollestad.assent.Permission
+import com.afollestad.assent.runWithPermissions
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.R
+import com.mazenrashed.printooth.data.DiscoveryCallback
+import com.mazenrashed.printooth.utilities.Bluetooth
+import kotlinx.android.synthetic.main.activity_scanning.*
 
 class ScanningActivity : AppCompatActivity() {
     private lateinit var bluetooth: Bluetooth
@@ -43,14 +44,14 @@ class ScanningActivity : AppCompatActivity() {
         bluetooth.setDiscoveryCallback(object : DiscoveryCallback {
             override fun onDiscoveryStarted() {
                 refreshLayout.isRefreshing = true
-                (toolbar as Toolbar).title = "Scanning.."
+                toolbar.title = "Scanning.."
                 devices.clear()
                 devices.addAll(bluetooth.pairedDevices)
                 adapter.notifyDataSetChanged()
             }
 
             override fun onDiscoveryFinished() {
-                (toolbar as Toolbar).title = if (devices.isNotEmpty()) "Select Printing" else "No devices"
+                toolbar.title = if (devices.isNotEmpty()) "Select a Printer" else "No devices"
                 refreshLayout.isRefreshing = false
             }
 
@@ -71,7 +72,7 @@ class ScanningActivity : AppCompatActivity() {
 
             override fun onDeviceUnpaired(device: BluetoothDevice) {
                 Toast.makeText(this@ScanningActivity, "Device unpaired", Toast.LENGTH_SHORT).show()
-                var pairedPrinter = Printooth.getPairedPrinter()
+                val pairedPrinter = Printooth.getPairedPrinter()
                 if (pairedPrinter != null && pairedPrinter.address == device.address)
                     Printooth.removeCurrentPrinter()
                 devices.remove(device)
@@ -89,13 +90,12 @@ class ScanningActivity : AppCompatActivity() {
     private fun initListeners() {
         refreshLayout.setOnRefreshListener { bluetooth.startScanning() }
         printers.setOnItemClickListener { _, _, i, _ ->
-            var device = devices[i]
+            val device = devices[i]
             if (device.bondState == BluetoothDevice.BOND_BONDED) {
                 Printooth.setPrinter(device.name, device.address)
                 setResult(Activity.RESULT_OK)
                 this@ScanningActivity.finish()
-            }
-            else if (device.bondState == BluetoothDevice.BOND_NONE)
+            } else if (device.bondState == BluetoothDevice.BOND_NONE)
                 bluetooth.pair(devices[i])
             adapter.notifyDataSetChanged()
         }
@@ -107,12 +107,16 @@ class ScanningActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        bluetooth.onStart()
-        if (!bluetooth.isEnabled)
-            bluetooth.enable()
-        Handler().postDelayed({
-            bluetooth.startScanning()
-        }, 1000)
+
+        runWithPermissions(Permission.ACCESS_FINE_LOCATION) {
+            bluetooth.onStart()
+            if (!bluetooth.isEnabled)
+                bluetooth.enable()
+            Handler().postDelayed({
+                bluetooth.startScanning()
+            }, 1000)
+        }
+
     }
 
     override fun onStop() {
@@ -129,7 +133,7 @@ class ScanningActivity : AppCompatActivity() {
             return devices.size
         }
 
-        override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
             return LayoutInflater.from(context)
                     .inflate(R.layout.bluetooth_device_row, parent, false).apply {
                         findViewById<TextView>(R.id.name).text = if (devices[position].name.isNullOrEmpty()) devices[position].address else devices[position].name
