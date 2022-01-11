@@ -4,13 +4,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
-
-
+    compileSdkVersion 31
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -52,10 +50,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'io.paperdb:paperdb:2.6'
+    implementation 'io.paperdb:paperdb:2.7.1'
     //Runtime permissions
     implementation 'com.afollestad.assent:core:3.0.0-RC4'
-    implementation 'com.android.support:design:29.0.0'
+    implementation 'com.android.support:design:31.0.0'
 }
 repositories {
     mavenCentral()
