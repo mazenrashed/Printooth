@@ -3,11 +3,13 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application android:theme="@style/AppTheme">
         <activity
             android:name="com.mazenrashed.printooth.ui.ScanningActivity"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="com.mazenrashed.universalbluethootprinter.ui.ScanningActivity.LAUNCH" />
