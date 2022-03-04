@@ -72,6 +72,10 @@ class WoosimActivity : AppCompatActivity() {
                 Toast.makeText(this@WoosimActivity, "Message: $message", Toast.LENGTH_SHORT).show()
             }
 
+            override fun disconnected() {
+                Toast.makeText(this@WoosimActivity, "Disconnected printer", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 

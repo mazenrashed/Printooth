@@ -44,7 +44,9 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
                 printingCallback?.printingOrderSentSuccessfully()
             }
 
-            override fun onDeviceDisconnected(device: BluetoothDevice, message: String) {}
+            override fun onDeviceDisconnected(device: BluetoothDevice, message: String) {
+                printingCallback?.disconnected()
+            }
 
             override fun onMessage(message: String) {
                 printingCallback?.onMessage(message)

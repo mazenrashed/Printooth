@@ -81,6 +81,10 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Message: $message", Toast.LENGTH_SHORT).show()
             }
 
+            override fun disconnected() {
+                Toast.makeText(this@MainActivity, "Disconnected Printer", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 

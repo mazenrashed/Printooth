@@ -6,4 +6,5 @@ interface PrintingCallback {
     fun connectionFailed(error: String)
     fun onError(error: String)
     fun onMessage(message: String)
+    fun disconnected()
 }
