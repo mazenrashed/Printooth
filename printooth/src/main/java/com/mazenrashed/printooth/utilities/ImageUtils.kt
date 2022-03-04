@@ -49,31 +49,35 @@ object ImageUtils {
         }
 
         val bmpHexList = binaryListToHexStringList(list)
-        val commandHexString = "1D763000"
-        var widthHexString = Integer
-                .toHexString(if (bmpWidth % 8 == 0)
-                    bmpWidth / 8
-                else
-                    bmpWidth / 8 + 1)
-        if (widthHexString.length > 2) {
+        val commandHexString = "1D763000"        
+
+        val printWidth = if (bmpWidth % 8 == 0) bmpWidth / 8 else bmpWidth / 8 + 1
+        var printLowWidthHex = Integer.toHexString(getLowValue(printWidth))
+        var printHighWidthHex = Integer.toHexString(getHighValue(printWidth))
+        if (printHighWidthHex.length > 2) {
             Log.e("decodeBitmap error", " width is too large")
             return null
-        } else if (widthHexString.length == 1) {
-            widthHexString = "0$widthHexString"
+        } else if (printHighWidthHex.length == 1) {
+            printHighWidthHex = "0$printHighWidthHex"
         }
-        widthHexString += "00"
+        if (printLowWidthHex.length == 1) {
+            printLowWidthHex = "0$printLowWidthHex"
+        }
 
-        var heightHexString = Integer.toHexString(bmpHeight)
-        if (heightHexString.length > 2) {
+        var printLowHeightHex = Integer.toHexString(getLowValue(bmpHeight))
+        var printHighHeightHex = Integer.toHexString(getHighValue(bmpHeight))
+        if (printHighHeightHex.length > 2) {
             Log.e("decodeBitmap error", " height is too large")
             return null
-        } else if (heightHexString.length == 1) {
-            heightHexString = "0$heightHexString"
+        } else if (printHighHeightHex.length == 1) {
+            printHighHeightHex = "0$printHighHeightHex"
         }
-        heightHexString += "00"
+        if (printLowHeightHex.length == 1) {
+            printLowHeightHex = "0$printLowHeightHex"
+        }
 
         val commandList = ArrayList<String>()
-        commandList.add(commandHexString + widthHexString + heightHexString)
+        commandList.add(commandHexString + printLowWidthHex + printHighWidthHex + printLowHeightHex + printHighHeightHex)
         commandList.addAll(bmpHexList)
 
         return hexList2Byte(commandList)
@@ -154,6 +158,24 @@ object ImageUtils {
 
     private fun charToByte(c: Char): Byte {
         return "0123456789ABCDEF".indexOf(c).toByte()
+    }
+
+    private fun getLowValue(rawValue: Int): Int {
+        var value = rawValue
+        while (value > 255) {
+            value -= 256
+        }
+        return value
+    }
+
+    private fun getHighValue(rawValue: Int): Int {
+        var value = rawValue
+        var res = 0
+        while (value > 255) {
+            value -= 256
+            res++
+        }
+        return res
     }
 
 }
