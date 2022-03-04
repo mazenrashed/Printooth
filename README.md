@@ -66,6 +66,7 @@ To print `Hello World` simply, write this code:
 var printables = ArrayList<Printable>()
 var printable = TextPrintable.Builder()  
         .setText("Hello World")
+        .build()
 printables.add(printable)
 Printooth.printer().print(printables)
 ```
