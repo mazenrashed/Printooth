@@ -50,7 +50,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'io.github.pilgr:paperdb:2.7.1'
+    implementation 'io.github.pilgr:paperdb:2.7.2'
     //Runtime permissions
     implementation 'com.afollestad.assent:core:3.0.0-RC4'
     implementation 'com.android.support:design:31.0.0'
