@@ -9,6 +9,7 @@ import com.mazenrashed.printooth.data.DeviceCallback
 import com.mazenrashed.printooth.data.PairedPrinter
 import com.mazenrashed.printooth.data.printable.Printable
 import com.mazenrashed.printooth.data.printer.Printer
+import java.io.IOException
 
 class Printing(private var printer: Printer, private var pairedPrinter: PairedPrinter, val context: Context) {
     private lateinit var printables: List<Printable>
@@ -41,7 +42,6 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
         bluetooth.setDeviceCallback(object : DeviceCallback {
             override fun onDeviceConnected(device: BluetoothDevice) {
                 printPrintables()
-                printingCallback?.printingOrderSentSuccessfully()
             }
 
             override fun onDeviceDisconnected(device: BluetoothDevice, message: String) {
@@ -63,21 +63,29 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
     }
 
     private fun printPrintables() {
-        bluetooth.send(printer.initPrinterCommand) // init printer
-        this.printables.forEach {
-            it.getPrintableByteArray(printer).forEach { ops ->
-                bluetooth.send(ops)
+        try {
+            bluetooth.send(printer.initPrinterCommand) // init printer
+            this.printables.forEach {
+                it.getPrintableByteArray(printer).forEach { ops ->
+                    bluetooth.send(ops)
+                }
             }
+
+            //Feed 2 lines to cut the paper
+            if (extraLinesAtEnd > 0) {
+                bluetooth.send(printer.feedLineCommand.plus(extraLinesAtEnd))
+            }
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                bluetooth.disconnect()
+            }, 2000)
+
+            printingCallback?.printingOrderSentSuccessfully()
+        } catch (e: IOException) {
+            printingCallback?.onError("Couldn't send data to the other device. Error: " + e.message)
         }
 
-        //Feed 2 lines to cut the paper
-        if (extraLinesAtEnd > 0) {
-            bluetooth.send(printer.feedLineCommand.plus(extraLinesAtEnd))
-        }
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            bluetooth.disconnect()
-        }, 2000)
     }
 
     fun print(printables: ArrayList<Printable>) {
