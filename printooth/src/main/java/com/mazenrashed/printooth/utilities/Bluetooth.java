@@ -171,7 +171,7 @@ public class Bluetooth {
         }
     };
 
-    public void send(byte[] msg) {
+    public void send(byte[] msg) throws IOException {
         sendMessage(msg);
     }
 
@@ -228,13 +228,14 @@ public class Bluetooth {
         }
     }
 
-    public void sendMessage(byte[] msg) {
+    public void sendMessage(byte[] msg) throws IOException {
         try {
             out.write(msg);
         } catch (final IOException e) {
             connected = false;
             if (deviceCallback != null)
                 deviceCallback.onDeviceDisconnected(device, e.getMessage());
+            throw e;
         }
     }
 
