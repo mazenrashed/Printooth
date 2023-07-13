@@ -171,7 +171,7 @@ public class Bluetooth {
         }
     };
 
-    public void send(byte[] msg) {
+    public void send(byte[] msg) throws IOException {
         sendMessage(msg);
     }
 
