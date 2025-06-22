@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.mazenrashed.printooth.Printooth
+import com.mazenrashed.printooth.R
 import com.mazenrashed.printooth.databinding.BluetoothDeviceRowBinding
 
 class DevicesAdapter(private val itemClickListener: OnClickListener) : RecyclerView.Adapter<DevicesAdapter.DevicesViewHolder>() {
@@ -75,12 +76,14 @@ class DevicesAdapter(private val itemClickListener: OnClickListener) : RecyclerV
                 binding.root.tag = position
 
                 binding.name.text = if (device.name.isNullOrEmpty()) device.address else device.name
+
                 binding.pairStatus.visibility = if (device.bondState != BluetoothDevice.BOND_NONE) View.VISIBLE else View.INVISIBLE
                 binding.pairStatus.text = when (device.bondState) {
-                    BluetoothDevice.BOND_BONDED -> "Paired"
-                    BluetoothDevice.BOND_BONDING -> "Pairing.."
+                    BluetoothDevice.BOND_BONDED -> binding.root.context.getString(R.string.printooth_paired)
+                    BluetoothDevice.BOND_BONDING -> binding.root.context.getString(R.string.printooth_pairing)
                     else -> ""
                 }
+
                 binding.pairedPrinter.visibility = if (Printooth.getPairedPrinter()?.address == device.address) View.VISIBLE else View.GONE
             }
         }

@@ -13,6 +13,7 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.mazenrashed.printooth.Printooth
+import com.mazenrashed.printooth.R
 import com.mazenrashed.printooth.data.DiscoveryCallback
 import com.mazenrashed.printooth.databinding.ViewScanningBinding
 import com.mazenrashed.printooth.utilities.Bluetooth
@@ -45,14 +46,14 @@ class ScanningView @JvmOverloads constructor(context: Context, attrs: AttributeS
     private val bluetoothDiscoveryCallback = object : DiscoveryCallback {
         override fun onDiscoveryStarted() {
             binding.refreshLayout.isRefreshing = true
-            binding.toolbar.text = "Scanning.."
+            binding.toolbar.text = context.getString(R.string.printooth_scanning)
 
             adapter.setItems(bluetooth.pairedDevices)
             adapter.notifyDataSetChanged()
         }
 
         override fun onDiscoveryFinished() {
-            binding.toolbar.text = if (adapter.isNotEmpty()) "Select a Printer" else "No devices"
+            binding.toolbar.text = context.getString(if (adapter.isNotEmpty()) R.string.printooth_select_printer else R.string.printooth_no_devices)
             binding.refreshLayout.isRefreshing = false
         }
 
@@ -66,7 +67,7 @@ class ScanningView @JvmOverloads constructor(context: Context, attrs: AttributeS
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
                 Printooth.setPrinter(device.name, device.address)
 
-                Toast.makeText(context, "Device Paired", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.printooth_device_paired, Toast.LENGTH_SHORT).show()
                 adapter.notifyDataSetChanged()
 
                 invokeDeviceBonded?.invoke()
@@ -74,7 +75,7 @@ class ScanningView @JvmOverloads constructor(context: Context, attrs: AttributeS
         }
 
         override fun onDeviceUnpaired(device: BluetoothDevice) {
-            Toast.makeText(context, "Device unpaired", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.printooth_device_unpaired, Toast.LENGTH_SHORT).show()
             val pairedPrinter = Printooth.getPairedPrinter()
 
             if (pairedPrinter != null && pairedPrinter.address == device.address) {
@@ -89,7 +90,7 @@ class ScanningView @JvmOverloads constructor(context: Context, attrs: AttributeS
         }
 
         override fun onError(message: String?) {
-            Toast.makeText(context, "Error while pairing", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, R.string.printooth_error_while_pairing, Toast.LENGTH_SHORT).show()
             adapter.notifyDataSetChanged()
         }
     }

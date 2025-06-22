@@ -10,7 +10,7 @@
         android:layout_height="56dp"
         android:background="?colorPrimary"
         android:theme="?actionBarPopupTheme"
-        app:title="Scanning.." />
+        app:title="@string/printooth_scanning" />
 
     <com.mazenrashed.printooth.ui.ScanningView
         android:id="@+id/scanning_view"
