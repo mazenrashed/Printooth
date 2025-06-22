@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.mazenrashed.example.databinding.ActivityMainBinding
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.data.converter.ArabicConverter
 import com.mazenrashed.printooth.data.printable.ImagePrintable
@@ -15,48 +17,49 @@ import com.mazenrashed.printooth.data.printer.DefaultPrinter
 import com.mazenrashed.printooth.ui.ScanningActivity
 import com.mazenrashed.printooth.utilities.Printing
 import com.mazenrashed.printooth.utilities.PrintingCallback
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMainBinding
 
     private var printing : Printing? = null
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         if (Printooth.hasPairedPrinter())
             printing = Printooth.printer()
+
         initViews()
         initListeners()
     }
 
     private fun initViews() {
-        btnPiarUnpair.text = if (Printooth.hasPairedPrinter()) "Un-pair ${Printooth.getPairedPrinter()?.name}" else "Pair with printer"
+        binding.btnPiarUnpair.text = if (Printooth.hasPairedPrinter()) "Un-pair ${Printooth.getPairedPrinter()?.name}" else "Pair with printer"
     }
 
     private fun initListeners() {
-        btnPrint.setOnClickListener {
-            if (!Printooth.hasPairedPrinter()) startActivityForResult(Intent(this,
-                    ScanningActivity::class.java),
-                    ScanningActivity.SCANNING_FOR_PRINTER)
+        binding.btnPrint.setOnClickListener {
+            if (!Printooth.hasPairedPrinter()) scanPrinterResult.launch(Intent(this, ScanningActivity::class.java))
             else printSomePrintable()
         }
 
-        btnPrintImages.setOnClickListener {
-            if (!Printooth.hasPairedPrinter()) startActivityForResult(Intent(this,
-                    ScanningActivity::class.java),
-                    ScanningActivity.SCANNING_FOR_PRINTER)
+        binding.btnPrintImages.setOnClickListener {
+            if (!Printooth.hasPairedPrinter()) scanPrinterResult.launch(Intent(this, ScanningActivity::class.java))
             else printSomeImages()
         }
 
-        btnPiarUnpair.setOnClickListener {
+        binding.btnPiarUnpair.setOnClickListener {
             if (Printooth.hasPairedPrinter()) Printooth.removeCurrentPrinter()
-            else startActivityForResult(Intent(this, ScanningActivity::class.java),
-                    ScanningActivity.SCANNING_FOR_PRINTER)
+            else scanPrinterResult.launch(Intent(this, ScanningActivity::class.java))
+
             initViews()
         }
 
-        btnCustomPrinter.setOnClickListener {
+        binding.btnCustomPrinter.setOnClickListener {
             startActivity(Intent(this, WoosimActivity::class.java))
         }
 
@@ -69,11 +72,11 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Order sent to printer", Toast.LENGTH_SHORT).show()
             }
 
-            override fun connectionFailed(error: String) {
+            override fun connectionFailed(error: String?) {
                 Toast.makeText(this@MainActivity, "Failed to connect printer", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onError(error: String) {
+            override fun onError(error: String?) {
                 Toast.makeText(this@MainActivity, error, Toast.LENGTH_SHORT).show()
             }
 
@@ -84,7 +87,6 @@ class MainActivity : AppCompatActivity() {
             override fun disconnected() {
                 Toast.makeText(this@MainActivity, "Disconnected Printer", Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 
@@ -146,10 +148,11 @@ class MainActivity : AppCompatActivity() {
                 .build())
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == ScanningActivity.SCANNING_FOR_PRINTER && resultCode == Activity.RESULT_OK)
+    private val scanPrinterResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
             printSomePrintable()
+        }
+
         initViews()
     }
 }

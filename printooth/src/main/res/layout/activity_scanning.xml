@@ -18,10 +18,12 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/printers"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

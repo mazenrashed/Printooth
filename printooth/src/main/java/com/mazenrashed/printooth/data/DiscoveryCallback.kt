@@ -8,5 +8,5 @@ interface DiscoveryCallback {
     fun onDeviceFound(device: BluetoothDevice)
     fun onDevicePaired(device: BluetoothDevice)
     fun onDeviceUnpaired(device: BluetoothDevice)
-    fun onError(message: String)
+    fun onError(message: String?)
 }
