@@ -3,7 +3,10 @@
     <color name="colorPrimary">#424242</color>
     <color name="colorPrimaryDark">#2e2e2e</color>
     <color name="colorAccent">#EF882B</color>
-    <color name="text_black">#141414</color>
-    <color name="background">#FEFEFE</color>
-    <color name="light_gray">#AAB8C2</color>
+
+    <color name="printooth_color_toolbar_background">#424242</color>
+    <color name="printooth_color_toolbar_text">#FFFFFF</color>
+    <color name="printooth_color_devices_background">#FFFFFF</color>
+    <color name="printooth_color_devices_row_background">#FFFFFF</color>
+    <color name="printooth_color_devices_row_foreground">#424242</color>
 </resources>
