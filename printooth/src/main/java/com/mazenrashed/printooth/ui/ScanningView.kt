@@ -1,17 +1,14 @@
 package com.mazenrashed.printooth.ui
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.R
 import com.mazenrashed.printooth.data.DiscoveryCallback
@@ -64,14 +61,12 @@ class ScanningView @JvmOverloads constructor(context: Context, attrs: AttributeS
         }
 
         override fun onDevicePaired(device: BluetoothDevice) {
-            if (ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
-                Printooth.setPrinter(device.name, device.address)
+            Printooth.setPrinter(device.name, device.address)
 
-                Toast.makeText(context, R.string.printooth_device_paired, Toast.LENGTH_SHORT).show()
-                adapter.notifyDataSetChanged()
+            Toast.makeText(context, R.string.printooth_device_paired, Toast.LENGTH_SHORT).show()
+            adapter.notifyDataSetChanged()
 
-                invokeDeviceBonded?.invoke()
-            }
+            invokeDeviceBonded?.invoke()
         }
 
         override fun onDeviceUnpaired(device: BluetoothDevice) {

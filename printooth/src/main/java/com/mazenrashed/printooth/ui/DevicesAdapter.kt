@@ -1,13 +1,11 @@
 package com.mazenrashed.printooth.ui
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
-import android.content.pm.PackageManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.mazenrashed.printooth.Printooth
 import com.mazenrashed.printooth.R
@@ -71,21 +69,20 @@ class DevicesAdapter(private val itemClickListener: OnClickListener) : RecyclerV
     }
 
     inner class DevicesViewHolder(private val binding: BluetoothDeviceRowBinding): RecyclerView.ViewHolder(binding.root) {
+        @SuppressLint("MissingPermission")
         fun bind(position: Int, device: BluetoothDevice) {
-            if (ContextCompat.checkSelfPermission(binding.root.context, Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED) {
-                binding.root.tag = position
+            binding.root.tag = position
 
-                binding.name.text = if (device.name.isNullOrEmpty()) device.address else device.name
+            binding.name.text = if (device.name.isNullOrEmpty()) device.address else device.name
 
-                binding.pairStatus.visibility = if (device.bondState != BluetoothDevice.BOND_NONE) View.VISIBLE else View.INVISIBLE
-                binding.pairStatus.text = when (device.bondState) {
-                    BluetoothDevice.BOND_BONDED -> binding.root.context.getString(R.string.printooth_paired)
-                    BluetoothDevice.BOND_BONDING -> binding.root.context.getString(R.string.printooth_pairing)
-                    else -> ""
-                }
-
-                binding.pairedPrinter.visibility = if (Printooth.getPairedPrinter()?.address == device.address) View.VISIBLE else View.GONE
+            binding.pairStatus.visibility = if (device.bondState != BluetoothDevice.BOND_NONE) View.VISIBLE else View.INVISIBLE
+            binding.pairStatus.text = when (device.bondState) {
+                BluetoothDevice.BOND_BONDED -> binding.root.context.getString(R.string.printooth_paired)
+                BluetoothDevice.BOND_BONDING -> binding.root.context.getString(R.string.printooth_pairing)
+                else -> ""
             }
+
+            binding.pairedPrinter.visibility = if (Printooth.getPairedPrinter()?.address == device.address) View.VISIBLE else View.GONE
         }
     }
 }
