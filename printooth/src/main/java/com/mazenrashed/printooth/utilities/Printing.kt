@@ -1,9 +1,11 @@
 package com.mazenrashed.printooth.utilities
 
+import android.Manifest
 import android.bluetooth.BluetoothDevice
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.RequiresPermission
 import com.mazenrashed.printooth.data.BluetoothCallback
 import com.mazenrashed.printooth.data.DeviceCallback
 import com.mazenrashed.printooth.data.PairedPrinter
@@ -25,6 +27,7 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
         bluetooth.setBluetoothCallback(object : BluetoothCallback {
             override fun onBluetoothTurningOn() {}
 
+            @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
             override fun onBluetoothOn() {
                 bluetooth.connectToAddress(pairedPrinter.address)
             }
@@ -44,7 +47,7 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
                 printingCallback?.printingOrderSentSuccessfully()
             }
 
-            override fun onDeviceDisconnected(device: BluetoothDevice, message: String) {
+            override fun onDeviceDisconnected(device: BluetoothDevice, message: String?) {
                 printingCallback?.disconnected()
             }
 
@@ -52,11 +55,11 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
                 printingCallback?.onMessage(message)
             }
 
-            override fun onError(message: String) {
+            override fun onError(message: String?) {
                 printingCallback?.onError(message)
             }
 
-            override fun onConnectError(device: BluetoothDevice, message: String) {
+            override fun onConnectError(device: BluetoothDevice, message: String?) {
                 printingCallback?.connectionFailed(message)
             }
         })
@@ -64,6 +67,7 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
 
     private fun printPrintables() {
         bluetooth.send(printer.initPrinterCommand) // init printer
+
         this.printables.forEach {
             it.getPrintableByteArray(printer).forEach { ops ->
                 bluetooth.send(ops)
@@ -80,6 +84,7 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
         }, 2000)
     }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
     fun print(printables: ArrayList<Printable>) {
         this.printables = printables
         printingCallback?.connectingWithPrinter()

@@ -21,9 +21,18 @@ dependencies {
 ```
 ### Add permissions to manifest
 ```groovy
-<uses-permission android:name="android.permission.BLUETOOTH" />  
-<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.BLUETOOTH"
+    android:maxSdkVersion="30" />
+<uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+    android:maxSdkVersion="30" />
+<uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+    android:usesPermissionFlags="neverForLocation"
+    tools:targetApi="s" />
+<uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+    android:maxSdkVersion="30" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"
+    android:maxSdkVersion="30" />
 ```
 ### Initialize Printooth
 Should be initialized once in `Application.onCreate()`:
@@ -59,6 +68,8 @@ To remove the current saved printer:
 ```kotlin
 Printooth.removeCurrentPrinter()
 ```
+Usage in Jetpack Compose can be accomplished using `ScanningView` with `AndroidView` composable.
+
 ### Printing
 Printooth provides a simple builder to design your paper.
 To print `Hello World` simply, write this code:

@@ -24,6 +24,6 @@ abstract class Converter {
     }
 
     protected open fun convert(input: Char): Byte {
-        return input.toByte()
+        return input.code.toByte()
     }
 }

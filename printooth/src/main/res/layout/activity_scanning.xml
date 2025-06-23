@@ -10,18 +10,10 @@
         android:layout_height="56dp"
         android:background="?colorPrimary"
         android:theme="?actionBarPopupTheme"
-        app:title="Scanning.." />
+        app:title="@string/printooth_scanning" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/refreshLayout"
+    <com.mazenrashed.printooth.ui.ScanningView
+        android:id="@+id/scanning_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
-
-        <ListView
-            android:id="@+id/printers"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+        android:layout_height="match_parent" />
 </RelativeLayout>

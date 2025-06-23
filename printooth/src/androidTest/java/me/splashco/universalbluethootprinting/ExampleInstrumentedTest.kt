@@ -18,9 +18,8 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
 
-
         Log.d("TESTSTRING", Integer.parseInt("LF").toString())
-        val appContext = InstrumentationRegistry.getTargetContext()
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
 
         assertEquals("me.splashco.universalbluethootprinting.test", appContext.packageName)
     }

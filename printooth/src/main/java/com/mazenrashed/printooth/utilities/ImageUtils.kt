@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.util.Log
 
 import java.util.ArrayList
+import java.util.Locale
 
 object ImageUtils {
     private const val hexStr = "0123456789ABCDEF"
@@ -131,7 +132,7 @@ object ImageUtils {
         if (hexString == null || hexString == "") {
             return null
         }
-        hexString = hexString.toUpperCase()
+        hexString = hexString.uppercase(Locale.getDefault())
         val length = hexString.length / 2
         val hexChars = hexString.toCharArray()
         val d = ByteArray(length)

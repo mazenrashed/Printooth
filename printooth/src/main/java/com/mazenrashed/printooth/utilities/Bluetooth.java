@@ -1,6 +1,7 @@
 package com.mazenrashed.printooth.utilities;
 
 import android.app.Activity;
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -10,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Looper;
+
+import androidx.annotation.RequiresPermission;
 
 import com.mazenrashed.printooth.data.BluetoothCallback;
 import com.mazenrashed.printooth.data.DeviceCallback;
@@ -86,6 +89,7 @@ public class Bluetooth {
         context.unregisterReceiver(bluetoothReceiver);
     }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
     public void enable() {
         if (bluetoothAdapter != null) {
             if (!bluetoothAdapter.isEnabled()) {
@@ -120,15 +124,18 @@ public class Bluetooth {
         }
     };
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
     public void connectToAddress(String address, boolean insecureConnection) {
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
         connectToDevice(device, insecureConnection);
     }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
     public void connectToAddress(String address) {
         connectToAddress(address, false);
     }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
     public void connectToDevice(BluetoothDevice device, boolean insecureConnection) {
         new ConnectThread(device, insecureConnection).start();
     }
@@ -137,7 +144,7 @@ public class Bluetooth {
         return connected;
     }
 
-    private BroadcastReceiver scanReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -182,13 +189,14 @@ public class Bluetooth {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
     public List<BluetoothDevice> getPairedDevices() {
         return new ArrayList<>(bluetoothAdapter.getBondedDevices());
     }
 
+    @RequiresPermission(Manifest.permission.BLUETOOTH_SCAN)
     public void startScanning() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothDevice.ACTION_FOUND);
@@ -294,6 +302,8 @@ public class Bluetooth {
     }
 
     private class ConnectThread extends Thread {
+
+        @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
         ConnectThread(BluetoothDevice device, boolean insecureConnection) {
             Bluetooth.this.device = device;
             try {
@@ -309,6 +319,7 @@ public class Bluetooth {
             }
         }
 
+        @RequiresPermission(allOf = { Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN})
         public void run() {
             bluetoothAdapter.cancelDiscovery();
 
