@@ -12,9 +12,12 @@ data class ImagePrintable private constructor(val image: Bitmap,
 
     override fun getPrintableByteArray(printer: Printer): List<ByteArray> {
         val operations = mutableListOf(
-                printer.justificationCommand.plus(alignment),
-                printer.printingImagesHelper.getBitmapAsByteArray(image)
+            printer.justificationCommand.plus(alignment)
         )
+
+        printer.printingImagesHelper.getBitmapAsByteArray(image)?.forEach { p ->
+            operations.add(p)
+        }
 
         if (newLinesAfter > 0) {
             operations.add(printer.feedLineCommand.plus(newLinesAfter.toByte()))
