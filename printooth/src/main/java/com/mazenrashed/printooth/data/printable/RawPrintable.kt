@@ -8,8 +8,10 @@ data class RawPrintable private constructor(val command: ByteArray,
     override fun getPrintableByteArray(printer: Printer): List<ByteArray> {
         val operations = mutableListOf(command)
 
-        if (newLinesAfter > 0) {
-            operations.add(printer.feedLineCommand.plus(newLinesAfter.toByte()))
+        printer.feedLineCommand?.let { c ->
+            for (i in 0 until newLinesAfter) {
+                operations.add(c)
+            }
         }
 
         return operations
@@ -27,5 +29,4 @@ data class RawPrintable private constructor(val command: ByteArray,
             return RawPrintable(raw, newLinesAfter)
         }
     }
-
 }

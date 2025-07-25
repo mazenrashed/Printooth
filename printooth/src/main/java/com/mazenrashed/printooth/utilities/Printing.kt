@@ -79,8 +79,10 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
             .flatten()
             .forEach { c -> sendCommand(c) }
 
-        if (extraLinesAtEnd > 0 && printer.feedLineCommand.isNotEmpty()) {
-            sendCommand(printer.feedLineCommand.plus(extraLinesAtEnd))
+        printer.feedLineCommand?.let { c ->
+            for (i in 0 until extraLinesAtEnd) {
+                sendCommand(c)
+            }
         }
 
         sendCommand(printer.flushCommand)

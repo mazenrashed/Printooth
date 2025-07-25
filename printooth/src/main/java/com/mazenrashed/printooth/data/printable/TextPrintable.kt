@@ -15,14 +15,35 @@ data class TextPrintable private constructor(val text: String,
                                              val customConverter: Converter?) : Printable {
 
     override fun getPrintableByteArray(printer: Printer): List<ByteArray> {
-        val operations = mutableListOf(
-                printer.justificationCommand.plus(alignment),
-                printer.fontSizeCommand.plus(fontSize),
-                printer.emphasizedModeCommand.plus(bold),
-                printer.underlineModeCommand.plus(underlined),
-                printer.characterCodeCommand.plus(characterCode),
-                printer.lineSpacingCommand.plus(lineSpacing)
-        )
+        val operations = mutableListOf<ByteArray>()
+
+        printer.justificationCommand?.let {
+            operations.add(it.plus(alignment))
+        }
+
+        printer.justificationCommand?.let {
+            operations.add(it.plus(alignment))
+        }
+
+        printer.fontSizeCommand?.let {
+            operations.add(it.plus(fontSize))
+        }
+
+        printer.emphasizedModeCommand?.let {
+            operations.add(it.plus(bold))
+        }
+
+        printer.underlineModeCommand?.let {
+            operations.add(it.plus(underlined))
+        }
+
+        printer.characterCodeCommand?.let {
+            operations.add(it.plus(characterCode))
+        }
+
+        printer.lineSpacingCommand?.let {
+            operations.add(it.plus(lineSpacing))
+        }
 
         customConverter?.let {
             operations.add(it.toByteArray(text))
@@ -30,8 +51,10 @@ data class TextPrintable private constructor(val text: String,
             operations.add(printer.converter.toByteArray(text))
         }
 
-        if (newLinesAfter > 0) {
-            operations.add(printer.feedLineCommand.plus(newLinesAfter.toByte()))
+        printer.feedLineCommand?.let { c ->
+            for (i in 0 until newLinesAfter) {
+                operations.add(c)
+            }
         }
 
         return operations
@@ -97,5 +120,4 @@ data class TextPrintable private constructor(val text: String,
             return TextPrintable(text, fontSize, alignment, newLinesAfter, bold, underlined, characterCode, lineSpacing, customConverter)
         }
     }
-
 }

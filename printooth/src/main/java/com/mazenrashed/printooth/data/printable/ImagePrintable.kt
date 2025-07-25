@@ -11,16 +11,20 @@ data class ImagePrintable private constructor(val image: Bitmap,
                                               val newLinesAfter: Int) : Printable {
 
     override fun getPrintableByteArray(printer: Printer): List<ByteArray> {
-        val operations = mutableListOf(
-            printer.justificationCommand.plus(alignment)
-        )
+        val operations = mutableListOf<ByteArray>()
+
+        printer.justificationCommand?.let {
+            operations.add(it.plus(alignment))
+        }
 
         printer.printingImagesHelper.getBitmapAsByteArray(image)?.forEach { p ->
             operations.add(p)
         }
 
-        if (newLinesAfter > 0) {
-            operations.add(printer.feedLineCommand.plus(newLinesAfter.toByte()))
+        printer.feedLineCommand?.let { c ->
+            for (i in 0 until newLinesAfter) {
+                operations.add(c)
+            }
         }
 
         return operations
@@ -53,5 +57,4 @@ data class ImagePrintable private constructor(val image: Bitmap,
             return ImagePrintable(image, alignment, newLinesAfter)
         }
     }
-
 }
