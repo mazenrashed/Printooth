@@ -12,6 +12,7 @@ abstract class Printer {
     var characterCodeCommand = initCharacterCodeCommand()
     var feedLineCommand = initFeedLineCommand()
     var lineSpacingCommand = initLineSpacingCommand()
+    var flushCommand = initFlushCommand()
     var printingImagesHelper: PrintingImagesHelper = initPrintingImagesHelper()
     var converter: Converter = useConverter()
 
@@ -23,6 +24,7 @@ abstract class Printer {
     abstract fun initCharacterCodeCommand(): ByteArray
     abstract fun initFeedLineCommand(): ByteArray
     abstract fun initLineSpacingCommand(): ByteArray
+    abstract fun initFlushCommand(): ByteArray?
     abstract fun initPrintingImagesHelper(): PrintingImagesHelper
     abstract fun useConverter(): Converter
 }

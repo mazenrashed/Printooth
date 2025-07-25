@@ -22,8 +22,9 @@ class WoosimPrinter : Printer() {
 
     override fun initCharacterCodeCommand(): ByteArray = byteArrayOf(27, 116)
 
+    override fun initFlushCommand(): ByteArray? = null
+
     override fun initFeedLineCommand(): ByteArray = byteArrayOf(27, 100)
 
     override fun initPrintingImagesHelper(): PrintingImagesHelper = WoosimPrintingImagesHelper()
-
 }

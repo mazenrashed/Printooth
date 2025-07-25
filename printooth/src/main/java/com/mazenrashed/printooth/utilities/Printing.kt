@@ -83,6 +83,8 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
             sendCommand(printer.feedLineCommand.plus(extraLinesAtEnd))
         }
 
+        sendCommand(printer.flushCommand)
+
         Handler(Looper.getMainLooper()).postDelayed({
             bluetooth.disconnect()
         }, 2000)
