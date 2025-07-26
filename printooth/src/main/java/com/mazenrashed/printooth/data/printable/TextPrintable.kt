@@ -1,7 +1,6 @@
 package com.mazenrashed.printooth.data.printable
 
 import com.mazenrashed.printooth.data.converter.Converter
-import com.mazenrashed.printooth.data.printer.DefaultPrinter
 import com.mazenrashed.printooth.data.printer.Printer
 
 data class TextPrintable private constructor(val text: String,
@@ -17,43 +16,39 @@ data class TextPrintable private constructor(val text: String,
     override fun getPrintableByteArray(printer: Printer): List<ByteArray> {
         val operations = mutableListOf<ByteArray>()
 
-        printer.justificationCommand?.let {
-            operations.add(it.plus(alignment))
+        printer.getJustificationCommand(alignment)?.let {
+            operations.add(it)
         }
 
-        printer.justificationCommand?.let {
-            operations.add(it.plus(alignment))
+        printer.getFontSizeCommand(fontSize)?.let {
+            operations.add(it)
         }
 
-        printer.fontSizeCommand?.let {
-            operations.add(it.plus(fontSize))
+        printer.getEmphasizedModeCommand(bold)?.let {
+            operations.add(it)
         }
 
-        printer.emphasizedModeCommand?.let {
-            operations.add(it.plus(bold))
+        printer.getUnderlineModeCommand(underlined)?.let {
+            operations.add(it)
         }
 
-        printer.underlineModeCommand?.let {
-            operations.add(it.plus(underlined))
+        printer.getCharacterCodeCommand(characterCode)?.let {
+            operations.add(it)
         }
 
-        printer.characterCodeCommand?.let {
-            operations.add(it.plus(characterCode))
-        }
-
-        printer.lineSpacingCommand?.let {
-            operations.add(it.plus(lineSpacing))
+        printer.getLineSpacingCommand(lineSpacing)?.let {
+            operations.add(it)
         }
 
         customConverter?.let {
             operations.add(it.toByteArray(text))
         } ?: run {
-            operations.add(printer.converter.toByteArray(text))
+            operations.add(printer.getConverter().toByteArray(text))
         }
 
-        printer.feedLineCommand?.let { c ->
-            for (i in 0 until newLinesAfter) {
-                operations.add(c)
+        if (newLinesAfter > 0) {
+            printer.getFeedLinesCommand(newLinesAfter.toByte())?.let {
+                operations.add(it)
             }
         }
 
@@ -62,13 +57,13 @@ data class TextPrintable private constructor(val text: String,
 
     class Builder {
         private var text = ""
-        private var fontSize = DefaultPrinter.FONT_SIZE_NORMAL
-        private var alignment: Byte = DefaultPrinter.ALIGNMENT_LEFT
+        private var fontSize = Printer.FONT_SIZE_NORMAL
+        private var alignment: Byte = Printer.ALIGNMENT_LEFT
         private var newLinesAfter = 0
-        private var bold: Byte = DefaultPrinter.EMPHASIZED_MODE_NORMAL
-        private var underlined: Byte = DefaultPrinter.UNDERLINED_MODE_OFF
-        private var characterCode: Byte = DefaultPrinter.CHARCODE_PC437
-        private var lineSpacing: Byte = DefaultPrinter.LINE_SPACING_30
+        private var bold: Byte = Printer.EMPHASIZED_MODE_NORMAL
+        private var underlined: Byte = Printer.UNDERLINED_MODE_OFF
+        private var characterCode: Byte = Printer.CHARCODE_PC437
+        private var lineSpacing: Byte = Printer.LINE_SPACING_30
         private var customConverter: Converter? = null
 
         fun setText(text: String): Builder {

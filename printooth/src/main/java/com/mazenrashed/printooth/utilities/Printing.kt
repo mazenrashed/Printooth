@@ -72,20 +72,20 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
     // Note: probably this needs to be revised and moved into Printer to support
     // customized flows
     private fun print() {
-        sendCommand(printer.initPrinterCommand)
+        sendCommand(printer.getInitPrinterCommand())
 
         this.printableList
             .map { p -> p.getPrintableByteArray(printer) }
             .flatten()
             .forEach { c -> sendCommand(c) }
 
-        printer.feedLineCommand?.let { c ->
-            for (i in 0 until extraLinesAtEnd) {
-                sendCommand(c)
+        if (extraLinesAtEnd > 0) {
+            printer.getFeedLinesCommand(extraLinesAtEnd)?.let {
+                sendCommand(it)
             }
         }
 
-        sendCommand(printer.flushCommand)
+        sendCommand(printer.getFlushCommand())
 
         Handler(Looper.getMainLooper()).postDelayed({
             bluetooth.disconnect()
