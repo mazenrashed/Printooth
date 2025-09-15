@@ -6,24 +6,25 @@ import com.mazenrashed.printooth.data.converter.Converter
 import com.mazenrashed.printooth.data.printer.Printer
 
 class WoosimPrinter : Printer() {
-    override fun useConverter(): Converter = ArabicConverter()
+    override fun getConverter(): Converter = ArabicConverter()
 
-    override fun initLineSpacingCommand(): ByteArray = byteArrayOf(0x1B, 0x33)
+    override fun getLineSpacingCommand(spacing: Byte): ByteArray = byteArrayOf(0x1B, 0x33, spacing)
 
-    override fun initInitPrinterCommand(): ByteArray = byteArrayOf(0x1b, 0x40)
+    override fun getInitPrinterCommand(): ByteArray = byteArrayOf(0x1b, 0x40)
 
-    override fun initJustificationCommand(): ByteArray = byteArrayOf(27, 97)
+    override fun getJustificationCommand(alignment: Byte): ByteArray = byteArrayOf(27, 97, alignment)
 
-    override fun initFontSizeCommand(): ByteArray = byteArrayOf(29, 33)
+    override fun getFontSizeCommand(size: Byte): ByteArray = byteArrayOf(29, 33, size)
 
-    override fun initEmphasizedModeCommand(): ByteArray = byteArrayOf(27, 69) //1 on , 0 off
+    override fun getEmphasizedModeCommand(emphasized: Byte): ByteArray = byteArrayOf(27, 69, emphasized)
 
-    override fun initUnderlineModeCommand(): ByteArray = byteArrayOf(27, 45) //1 on , 0 off
+    override fun getUnderlineModeCommand(mode: Byte): ByteArray = byteArrayOf(27, 45, mode)
 
-    override fun initCharacterCodeCommand(): ByteArray = byteArrayOf(27, 116)
+    override fun getCharacterCodeCommand(code: Byte): ByteArray = byteArrayOf(27, 116, code)
 
-    override fun initFeedLineCommand(): ByteArray = byteArrayOf(27, 100)
+    override fun getFlushCommand(): ByteArray? = null
 
-    override fun initPrintingImagesHelper(): PrintingImagesHelper = WoosimPrintingImagesHelper()
+    override fun getFeedLinesCommand(lines: Byte): ByteArray = byteArrayOf(27, 100, lines)
 
+    override fun getPrintingImagesHelper(): PrintingImagesHelper = WoosimPrintingImagesHelper()
 }

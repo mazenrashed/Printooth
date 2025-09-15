@@ -16,7 +16,6 @@ import com.mazenrashed.printooth.data.printable.ImagePrintable
 import com.mazenrashed.printooth.data.printable.Printable
 import com.mazenrashed.printooth.data.printable.RawPrintable
 import com.mazenrashed.printooth.data.printable.TextPrintable
-import com.mazenrashed.printooth.data.printer.DefaultPrinter
 import com.mazenrashed.printooth.data.printer.Printer
 import com.mazenrashed.printooth.ui.ScanningActivity
 import com.mazenrashed.printooth.utilities.PermissionsUtils
@@ -152,40 +151,40 @@ class MainActivity : AppCompatActivity() {
 
         add(TextPrintable.Builder()
                 .setText(" Hello World : été è à '€' içi Bò Xào Coi Xanh")
-                .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
+                .setCharacterCode(Printer.CHARCODE_PC1252)
                 .setNewLinesAfter(1)
                 .build())
 
         add(TextPrintable.Builder()
                 .setText("Hello World : été è à €")
-                .setCharacterCode(DefaultPrinter.CHARCODE_PC1252)
+                .setCharacterCode(Printer.CHARCODE_PC1252)
                 .setNewLinesAfter(1)
                 .build())
 
         add(TextPrintable.Builder()
                 .setText("Hello World")
-                .setLineSpacing(DefaultPrinter.LINE_SPACING_60)
-                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
-                .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
-                .setUnderlined(DefaultPrinter.UNDERLINED_MODE_ON)
+                .setLineSpacing(Printer.LINE_SPACING_60)
+                .setAlignment(Printer.ALIGNMENT_CENTER)
+                .setEmphasizedMode(Printer.EMPHASIZED_MODE_BOLD)
+                .setUnderlined(Printer.UNDERLINED_MODE_ON)
                 .setNewLinesAfter(1)
                 .build())
 
         add(TextPrintable.Builder()
                 .setText("Hello World")
-                .setAlignment(DefaultPrinter.ALIGNMENT_RIGHT)
-                .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
-                .setUnderlined(DefaultPrinter.UNDERLINED_MODE_ON)
+                .setAlignment(Printer.ALIGNMENT_RIGHT)
+                .setEmphasizedMode(Printer.EMPHASIZED_MODE_BOLD)
+                .setUnderlined(Printer.UNDERLINED_MODE_ON)
                 .setNewLinesAfter(1)
                 .build())
 
         add(TextPrintable.Builder()
                 .setText("اختبار العربية")
-                .setAlignment(DefaultPrinter.ALIGNMENT_CENTER)
-                .setEmphasizedMode(DefaultPrinter.EMPHASIZED_MODE_BOLD)
-                .setFontSize(DefaultPrinter.FONT_SIZE_NORMAL)
-                .setUnderlined(DefaultPrinter.UNDERLINED_MODE_ON)
-                .setCharacterCode(DefaultPrinter.CHARCODE_ARABIC_FARISI)
+                .setAlignment(Printer.ALIGNMENT_CENTER)
+                .setEmphasizedMode(Printer.EMPHASIZED_MODE_BOLD)
+                .setFontSize(Printer.FONT_SIZE_NORMAL)
+                .setUnderlined(Printer.UNDERLINED_MODE_ON)
+                .setCharacterCode(Printer.CHARCODE_ARABIC_FARISI)
                 .setNewLinesAfter(1)
                 .setCustomConverter(ArabicConverter()) // change only the converter for this one
                 .build())

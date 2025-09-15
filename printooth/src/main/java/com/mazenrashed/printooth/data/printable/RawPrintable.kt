@@ -9,7 +9,9 @@ data class RawPrintable private constructor(val command: ByteArray,
         val operations = mutableListOf(command)
 
         if (newLinesAfter > 0) {
-            operations.add(printer.feedLineCommand.plus(newLinesAfter.toByte()))
+            printer.getFeedLinesCommand(newLinesAfter.toByte())?.let {
+                operations.add(it)
+            }
         }
 
         return operations
@@ -27,5 +29,4 @@ data class RawPrintable private constructor(val command: ByteArray,
             return RawPrintable(raw, newLinesAfter)
         }
     }
-
 }

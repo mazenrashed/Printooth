@@ -12,10 +12,14 @@ import com.mazenrashed.printooth.data.PairedPrinter
 import com.mazenrashed.printooth.data.printable.Printable
 import com.mazenrashed.printooth.data.printer.Printer
 
-class Printing(private var printer: Printer, private var pairedPrinter: PairedPrinter, val context: Context) {
-    private lateinit var printables: List<Printable>
+class Printing(private var printer: Printer, private var pairedPrinter: PairedPrinter, context: Context) {
+
+    private var printableList = mutableListOf<Printable>()
+
     private var bluetooth = Bluetooth(context)
+
     var printingCallback: PrintingCallback? = null
+
     var extraLinesAtEnd: Byte = 0
 
     init {
@@ -43,7 +47,7 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
     private fun initDeviceCallback() {
         bluetooth.setDeviceCallback(object : DeviceCallback {
             override fun onDeviceConnected(device: BluetoothDevice) {
-                printPrintables()
+                print()
                 printingCallback?.printingOrderSentSuccessfully()
             }
 
@@ -65,30 +69,44 @@ class Printing(private var printer: Printer, private var pairedPrinter: PairedPr
         })
     }
 
-    private fun printPrintables() {
-        bluetooth.send(printer.initPrinterCommand) // init printer
+    // Note: probably this needs to be revised and moved into Printer to support
+    // customized flows
+    private fun print() {
+        sendCommand(printer.getInitPrinterCommand())
 
-        this.printables.forEach {
-            it.getPrintableByteArray(printer).forEach { ops ->
-                bluetooth.send(ops)
+        this.printableList
+            .map { p -> p.getPrintableByteArray(printer) }
+            .flatten()
+            .forEach { c -> sendCommand(c) }
+
+        if (extraLinesAtEnd > 0) {
+            printer.getFeedLinesCommand(extraLinesAtEnd)?.let {
+                sendCommand(it)
             }
         }
 
-        //Feed 2 lines to cut the paper
-        if (extraLinesAtEnd > 0) {
-            bluetooth.send(printer.feedLineCommand.plus(extraLinesAtEnd))
-        }
+        sendCommand(printer.getFlushCommand())
 
         Handler(Looper.getMainLooper()).postDelayed({
             bluetooth.disconnect()
         }, 2000)
     }
 
+    private fun sendCommand(command: ByteArray?) {
+        if (command?.isNotEmpty() == true) {
+            bluetooth.send(command)
+        }
+    }
+
     @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
-    fun print(printables: ArrayList<Printable>) {
-        this.printables = printables
+    fun print(printableItems: ArrayList<Printable>) {
+        this.printableList.clear()
+        this.printableList.addAll(printableItems)
+
         printingCallback?.connectingWithPrinter()
+
         bluetooth.onStart()
+
         if (!bluetooth.isEnabled) bluetooth.enable() else bluetooth.connectToAddress(pairedPrinter.address)
     }
 }

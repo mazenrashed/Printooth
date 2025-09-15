@@ -2,5 +2,11 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccent">#FFFFFF</color>
+
+    <color name="printooth_color_toolbar_background">#424242</color>
+    <color name="printooth_color_toolbar_text">#FFFFFF</color>
+    <color name="printooth_color_devices_background">#FFFFFF</color>
+    <color name="printooth_color_devices_row_background">#FFFFFF</color>
+    <color name="printooth_color_devices_row_foreground">#424242</color>
 </resources>

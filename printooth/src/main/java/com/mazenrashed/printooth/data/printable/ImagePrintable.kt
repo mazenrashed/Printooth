@@ -3,7 +3,6 @@ package com.mazenrashed.printooth.data.printable
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.mazenrashed.printooth.data.printer.DefaultPrinter
 import com.mazenrashed.printooth.data.printer.Printer
 
 data class ImagePrintable private constructor(val image: Bitmap,
@@ -11,20 +10,27 @@ data class ImagePrintable private constructor(val image: Bitmap,
                                               val newLinesAfter: Int) : Printable {
 
     override fun getPrintableByteArray(printer: Printer): List<ByteArray> {
-        val operations = mutableListOf(
-                printer.justificationCommand.plus(alignment),
-                printer.printingImagesHelper.getBitmapAsByteArray(image)
-        )
+        val operations = mutableListOf<ByteArray>()
+
+        printer.getJustificationCommand(alignment)?.let {
+            operations.add(it)
+        }
+
+        printer.getPrintingImagesHelper().getBitmapAsByteArray(image)?.forEach {
+            operations.add(it)
+        }
 
         if (newLinesAfter > 0) {
-            operations.add(printer.feedLineCommand.plus(newLinesAfter.toByte()))
+            printer.getFeedLinesCommand(newLinesAfter.toByte())?.let {
+                operations.add(it)
+            }
         }
 
         return operations
     }
 
     class Builder() {
-        private var alignment: Byte = DefaultPrinter.ALIGNMENT_LEFT
+        private var alignment: Byte = Printer.ALIGNMENT_LEFT
         private var newLinesAfter = 0
         private lateinit var image: Bitmap
 
@@ -50,5 +56,4 @@ data class ImagePrintable private constructor(val image: Bitmap,
             return ImagePrintable(image, alignment, newLinesAfter)
         }
     }
-
 }
